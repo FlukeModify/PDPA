@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บทเรียน - PDPA Interactive Story</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0F172A;
+            --accent-color: #3B82F6;
+            --text-muted: #64748B;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+        
+        body { 
+            font-family: 'Sarabun', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--primary-dark);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body.no-scroll { overflow: hidden; position: fixed; width: 100%; }
+        
+        h1, h2, h3, .menu-btn, button { font-family: 'Prompt', sans-serif; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        #particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        header {
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #0F172A 0%, #1e3a8a 100%);
+            border-bottom: 3px solid var(--accent-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation: headerPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes headerPulse {
+            0%, 100% { transform: translate(-25%, -25%) scale(1); }
+            50% { transform: translate(-25%, -25%) scale(1.1); }
+        }
+
+        .brand { position: relative; z-index: 2; }
+        .brand h1 { 
+            font-size: 1.8rem; 
+            color: white;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            animation: titleGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
+        }
+
+        .brand span { 
+            color: #60A5FA;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .brand p { color: #cbd5e1; font-size: 0.9rem; margin-top: 5px; }
+
+        .nav-wrapper {
+            position: sticky; 
+            top: 0; 
+            background: rgba(255,255,255,0.95);
+            padding: 15px 20px; 
+            border-bottom: 1px solid #eee; 
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .main-menu { 
+            display: flex; 
+            gap: 10px; 
+            overflow-x: auto; 
+            padding-bottom: 5px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x proximity;
+            scroll-behavior: smooth;
+        }
+        
+        .main-menu::-webkit-scrollbar { display: none; }
+        
+        .menu-btn {
+            text-decoration: none; 
+            color: var(--text-muted); 
+            padding: 8px 16px;
+            border-radius: 20px; 
+            font-size: 0.9rem; 
+            white-space: nowrap; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #f1f5f9;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            scroll-snap-align: start;
+            user-select: none;
+        }
+
+        .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .menu-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .menu-btn:hover, .menu-btn.active { 
+            background: var(--primary-dark); 
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+        }
+
+        .menu-btn.active {
+            transform: translateY(0);
+        }
+
+        .library-section { 
+            padding: 60px 40px; 
+            text-align: center;
+            background: linear-gradient(135deg, #EFF6FF 0%, #FFFFFF 100%);
+            position: relative;
+        }
+
+        .library-section::before {
+            content: '📚';
+            position: absolute;
+            font-size: 15rem;
+            opacity: 0.03;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            animation: floatBook 6s ease-in-out infinite;
+        }
+
+        @keyframes floatBook {
+            0%, 100% { transform: translate(-50%, -50%) rotate(-15deg); }
+            50% { transform: translate(-50%, -45%) rotate(-10deg); }
+        }
+
+        .library-title { 
+            margin-bottom: 50px; 
+            font-size: 2rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .library-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .book-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px; 
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .book-item { 
+            cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            position: relative;
+        }
+
+        .book-item:hover { 
+            transform: translateY(-15px) scale(1.05);
+            z-index: 10;
+        }
+
+        .book-item:active {
+            transform: translateY(-12px) scale(1.03);
+        }
+
+        .book-item:hover .book-cover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+
+        .book-cover {
+            width: 100%; 
+            aspect-ratio: 3/4; 
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 8px 12px 20px rgba(0,0,0,0.15);
+            position: relative; 
+            overflow: hidden;
+            border-left: 6px solid rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .book-item:hover .book-cover::before {
+            left: 100%;
+        }
+
+        .book-cover img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .book-item:hover .book-cover img {
+            transform: scale(1.1);
+        }
+
+        .book-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            transition: all 0.3s ease;
+        }
+
+        .book-item:hover .book-title {
+            color: var(--accent-color);
+        }
+
+        /* Resource Section */
+        .resource-section {
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+            position: relative;
+        }
+
+        .resource-section::before {
+            content: '💡';
+            position: absolute;
+            font-size: 12rem;
+            opacity: 0.03;
+            top: 30%;
+            right: 10%;
+            animation: floatBulb 5s ease-in-out infinite;
+        }
+
+        @keyframes floatBulb {
+            0%, 100% { transform: translateY(0) rotate(-10deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .resource-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .resource-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .resource-grid {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        a.card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .article-card { 
+            display: flex; 
+            gap: 20px; 
+            background: var(--card-bg); 
+            border: 2px solid #e2e8f0; 
+            padding: 25px; 
+            border-radius: 16px; 
+            align-items: center; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+        }
+
+        a.card-link:active .article-card { transform: scale(0.98); }
+
+        .icon-box { 
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            width: 60px; 
+            height: 60px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 12px; 
+            font-size: 1.8rem; 
+            flex-shrink: 0; 
+            color: var(--accent-color);
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+        }
+
+        .text-box h3 { 
+            margin: 0 0 6px 0; 
+            font-size: 1.1rem; 
+            color: var(--primary-dark); 
+            font-weight: 600;
+        }
+
+        .text-box p { 
+            margin: 0; 
+            color: var(--text-muted); 
+            font-size: 0.9rem; 
+            line-height: 1.4;
+        }
+
+        .article-card::after {
+            content: '➜';
+            margin-left: auto; 
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            padding-left: 15px;
+            transition: transform 0.3s;
+        }
+
+        .article-card:hover::after {
+            transform: translateX(5px);
+            color: var(--accent-color);
+        }
+
+        .help-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-color), #2563EB);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            animation: pulse 2s infinite;
+            font-weight: bold;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 4px 30px rgba(59, 130, 246, 0.6); }
+        }
+
+        .help-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.6);
+        }
+
+        .help-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Video Modal */
+        .video-modal-overlay {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+            display: none; 
+            justify-content: center; 
+            align-items: center;
+            z-index: 9999; 
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .video-modal-content {
+            width: 80vw;
+            height: 80vh;
+            background: #000; 
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-modal-header {
+            position: absolute;
+            top: 20px; 
+            right: 20px;
+            z-index: 10;
+        }
+
+        .exit-popup-btn {
+            width: 50px; 
+            height: 50px;
+            background: #ef4444;
+            color: white; 
+            border: 2px solid #dc2626;
+            border-radius: 50%; 
+            cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .exit-popup-btn:hover {
+            background: #dc2626;
+            border-color: #b91c1c;
+            transform: rotate(90deg) scale(1.15);
+            box-shadow: 0 6px 25px rgba(239, 68, 68, 0.6);
+        }
+
+        .exit-popup-btn:active {
+            transform: rotate(90deg) scale(1);
+        }
+
+        .video-container { 
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-container iframe, .video-container video { 
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: contain;
+        }
+
+        /* Resource Modal - Full Screen */
+        .resource-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%; 
+            height: 100%;
+            background-color: white; 
+            z-index: 2000;
+            justify-content: center;
+            align-items: flex-start;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .resource-modal-container {
+            background: white;
+            width: 100%;
+            height: 100dvh;
+            border-radius: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+
+        .resource-modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            display: flex; 
+            gap: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .close-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex; 
+            align-items: center; 
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+            font-family: 'Prompt', sans-serif;
+        }
+        
+        .close-btn:active { transform: scale(0.95); }
+
+        .resource-modal-body {
+            flex: 1; 
+            width: 100%; 
+            background: #f1f5f9; 
+            position: relative;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-loader {
+            position: absolute; 
+            top: 50%; 
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-muted); 
+            font-size: 0.9rem; 
+            z-index: 0;
+        }
+
+        .resource-modal-body iframe {
+            width: 100%; 
+            height: 100%;
+            border: none; 
+            display: block; 
+            position: relative; 
+            z-index: 1;
+        }
+
+        .resource-modal-overlay.active { 
+            display: flex; 
+            opacity: 1; 
+        }
+        
+        .resource-modal-overlay.active .resource-modal-container { 
+            transform: translateY(0); 
+        }
+
+        /* Tablet */
+        @media (max-width: 992px) {
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 600px;
+                gap: 35px;
+            }
+        }
+
+        /* Desktop Resource Modal */
+        @media (min-width: 768px) {
+            .resource-modal-overlay { 
+                align-items: center; 
+                background-color: rgba(15, 23, 42, 0.85);
+            }
+            
+            .resource-modal-container {
+                width: 100%;       
+                max-width: 100%;   
+                height: 100%;      
+                border-radius: 0;  
+                transform: none;   
+            }
+            
+            .resource-modal-overlay.active .resource-modal-container { 
+                transform: none; 
+            }
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            header { 
+                flex-direction: column; 
+                text-align: center; 
+                gap: 15px; 
+                padding: 30px 20px;
+            }
+            
+            .brand h1 { font-size: 1.5rem; }
+            .brand p { font-size: 0.85rem; }
+            
+            .nav-wrapper {
+                padding: 12px 15px;
+            }
+            
+            .main-menu {
+                padding: 5px 0;
+                gap: 8px;
+            }
+            
+            .menu-btn {
+                font-size: 0.85rem;
+                padding: 6px 14px;
+            }
+            
+            .library-section, .resource-section {
+                padding: 40px 20px;
+            }
+            
+            .library-title, .resource-title {
+                font-size: 1.5rem;
+                margin-bottom: 30px;
+            }
+            
+            .book-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 20px;
+            }
+            
+            .book-title {
+                font-size: 0.85rem;
+            }
+
+            .resource-grid {
+                padding: 0 10px;
+            }
+
+            .article-card {
+                padding: 20px;
+                gap: 15px;
+            }
+
+            .icon-box {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .text-box h3 {
+                font-size: 1rem;
+            }
+
+            .text-box p {
+                font-size: 0.85rem;
+            }
+            
+            .help-btn { 
+                bottom: 20px; 
+                right: 20px; 
+                width: 50px; 
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            
+            .exit-popup-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
+            }
+            
+            .video-modal-header {
+                top: 15px;
+                right: 15px;
+            }
+            
+            #particles {
+                opacity: 0.5;
+            }
+        }
+
+        /* Touch Device Optimization */
+        @media (hover: none) and (pointer: coarse) {
+            .book-item:hover {
+                transform: none;
+            }
+            
+            .book-item:active {
+                transform: scale(0.98);
+                transition: transform 0.1s;
+            }
+            
+            .menu-btn:hover {
+                transform: none;
+                background: #f1f5f9;
+                color: var(--text-muted);
+            }
+
+            .menu-btn.active:hover {
+                background: var(--primary-dark);
+                color: white;
+            }
+            
+            .menu-btn:active {
+                transform: scale(0.95);
+            }
+            
+            .help-btn:hover {
+                transform: none;
+            }
+            
+            .help-btn:active {
+                transform: scale(0.9);
+            }
+            
+            .book-cover::before {
+                display: none;
+            }
+            
+            .menu-btn::before {
+                display: none;
+            }
+
+            .article-card:hover {
+                transform: none;
+            }
+
+            .article-card:active {
+                transform: scale(0.98);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand h1 { font-size: 1.3rem; }
+            .library-title, .resource-title { font-size: 1.3rem; }
+            .book-grid { 
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .help-btn { width: 45px; height: 45px; font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="brand">
+                <h1>PDPA <span>Learning Center</span></h1>
+                <p>ศูนย์การเรียนรู้กฎหมายคุ้มครองข้อมูลส่วนบุคคล</p>
+            </div>
+        </header>
+
+        <div class="nav-wrapper">
+            <nav class="main-menu">
+                <a href="index.html" class="menu-btn">🏠 หน้าแรก</a>
+                <a href="lesson.html" class="menu-btn active">📚 บทเรียน</a>
+                <a href="game.html" class="menu-btn">🎮 มินิเกม</a>
+                <a href="quiz.html" class="menu-btn">📝 ประเมิน</a>
+            
+                <a href="contact.html" class="menu-btn">💬 สอบถาม</a>
+            </nav>
+        </div>
+
+        <div class="library-section">
+            <h2 class="library-title">เลือกหนังสือเพื่อรับชมวิดีโอ</h2>
+            <div class="book-grid" id="bookGrid"></div>
+        </div>
+
+        <div class="resource-section">
+            <h2 class="resource-title">คลังความรู้เพิ่มเติม</h2>
+            <div class="resource-grid">
+                <a href="สื่อ/พรบคุ้มครองข้อมูลส่วนบุคคล62.PDF" 
+                   class="card-link open-resource-modal" 
+                   data-title="กฎหมาย PDPA ฉบับย่อ"
+                   onclick="playSound('click')">
+                    <div class="article-card">
+                        <div class="icon-box">⚖️</div>
+                        <div class="text-box">
+                            <h3>กฎหมาย PDPA ฉบับย่อ</h3>
+                            <p>สรุปสาระสำคัญ ที่ประชาชนควรรู้</p>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="https://www.youtube.com/embed/-1i2anSv5wQ?autoplay=1" 
+                   class="card-link open-resource-modal" 
+                   data-title="วิธีตั้งรหัสผ่านให้ปลอดภัย"
+                   onclick="playSound('click')">
+                    <div class="article-card">
+                        <div class="icon-box">🔐</div>
+                        <div class="text-box">
+                            <h3>วิธีตั้งรหัสผ่านให้ปลอดภัย</h3>
+                            <p>วิดีโอแนะนำเทคนิคการตั้ง Password ไม่ให้โดนแฮก</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/embed/t8EJA37beWo?autoplay=1&" 
+                   class="card-link open-resource-modal" 
+                   data-title="การขอความยินยอม (Consent) "
+                   onclick="playSound('click')">
+                    <div class="article-card">
+                        <div class="icon-box">📄</div>
+                        <div class="text-box">
+                            <h3>วิธีขอความยินยอมจากเจ้าของข้อมูลส่วนบุคคล มีวิธีขออย่างไร</h3>
+                            <p>รูปแบบ ประเภท ช่องทางขอความยินยอม</p>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.antifakenewscenter.com/homepage/" 
+                   class="card-link open-resource-modal" 
+                   data-title="เช็คข่าวปลอม"
+                   onclick="playSound('click')">
+                    <div class="article-card">
+                        <div class="icon-box">📊</div>
+                        <div class="text-box">
+                            <h3>ศูนย์ต่อต้านข่าวปลอม</h3>
+                            <p>ค้นหาข่าว</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <a href="contact.html" class="help-btn" title="ความช่วยเหลือ">?</a>
+
+    <!-- Video Modal for Lessons -->
+    <div class="video-modal-overlay" id="videoModal">
+        <div class="video-modal-content">
+            <div class="video-modal-header">
+                <button class="exit-popup-btn" onclick="closeVideoModal()" title="ปิดวิดีโอ">
+                    ✕
+                </button>
+            </div>
+            <div class="video-container" id="videoContainer"></div>
+        </div>
+    </div>
+
+    <!-- Resource Modal for Documents -->
+    <div id="resourceModal" class="resource-modal-overlay">
+        <div class="resource-modal-container">
+            <div class="resource-modal-header">
+                <span class="modal-title" id="modalTitle">กำลังโหลด...</span>
+                <button class="close-btn" onclick="closeResourceModal()">
+                    ✕ ปิด
+                </button>
+            </div>
+            <div class="resource-modal-body">
+                <div class="modal-loader">กำลังโหลดข้อมูล...</div>
+                <iframe id="modalFrame" src="" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sounds = {
+            hover: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
+            click: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'
+        };
+
+        function playSound(type) {
+            const audio = new Audio(sounds[type]);
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log('Audio play failed:', e));
+        }
+
+        // Particles Animation
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const isMobile = window.innerWidth <= 768;
+        const particleCount = isMobile ? 20 : 50;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(59, 130, 246, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Lesson Data
+        const lessons = [
+            { id: 1, title: "ความหมายของ PDPA", coverImage: "สื่อ/1.png", type: "video", url: "สื่อ/1.mp4" },
+            { id: 2, title: "PDPA ใกล้ตัว", coverImage: "สื่อ/2.png", type: "video", url: "สื่อ/2.mp4" },
+            { id: 3, title: "ตัวอย่างในชีวิตประจำวัน", coverImage: "สื่อ/3.png", type: "video", url: "สื่อ/3.mp4" },
+            { id: 4, title: "โทษเมื่อกระทำความผิด", coverImage: "สื่อ/4.png", type: "video", url: "สื่อ/4.mp4" }
+        ];
+
+        function renderBooks() {
+            const grid = document.getElementById('bookGrid');
+            grid.innerHTML = lessons.map(lesson => `
+                <div class="book-item" onclick="openLesson(${lesson.id})">
+                    <div class="book-cover">
+                        <img src="${lesson.coverImage}" alt="${lesson.title}">
+                    </div>
+                    <div class="book-title">${lesson.title}</div>
+                </div>
+            `).join('');
+
+document.querySelectorAll('.open-resource-modal').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const url = this.getAttribute('href');
+        const title = this.getAttribute('data-title');
+        
+        modalTitle.textContent = title;
+        
+        // ใส่คุณสมบัติ allow autoplay เพื่อให้วิดีโอเล่นเองได้
+        modalFrame.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+        modalFrame.src = url;
+        
+        resourceModal.classList.add('active');
+        document.body.classList.add('no-scroll');
+    });
+});
+        }
+
+        // Video Modal Functions
+        const videoModal = document.getElementById('videoModal');
+        const videoContainer = document.getElementById('videoContainer');
+
+        function openLesson(id) {
+            playSound('click');
+            const data = lessons.find(l => l.id === id);
+            videoContainer.innerHTML = "";
+
+            if (data.type === 'youtube') {
+                const videoId = getYoutubeId(data.url);
+videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+    allow="autoplay; encrypted-media; picture-in-picture" 
+    allowfullscreen></iframe>`;
+            } else if (data.type === 'video') {
+                videoContainer.innerHTML = `<video controls autoplay><source src="${data.url}" type="video/mp4"></video>`;
+            }
+
+            videoModal.style.display = "flex";
+            document.body.classList.add('no-scroll');
+        }
+
+        function closeVideoModal() {
+            videoModal.style.display = "none";
+            videoContainer.innerHTML = ""; 
+            document.body.classList.remove('no-scroll');
+        }
+
+        function getYoutubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // Resource Modal Functions
+        const resourceModal = document.getElementById('resourceModal');
+        const modalFrame = document.getElementById('modalFrame');
+        const modalTitle = document.getElementById('modalTitle');
+
+        document.querySelectorAll('.open-resource-modal').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                modalTitle.textContent = this.getAttribute('data-title');
+                modalFrame.src = this.getAttribute('href');
+                resourceModal.classList.add('active');
+                document.body.classList.add('no-scroll');
+            });
+        });
+
+        function closeResourceModal() {
+            playSound('click');
+            resourceModal.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+            setTimeout(() => { modalFrame.src = ''; }, 300);
+        }
+
+        // Close modals when clicking outside or pressing ESC
+        window.onclick = (e) => { 
+            if (e.target == videoModal) closeVideoModal();
+            if (e.target == resourceModal) closeResourceModal();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (videoModal.style.display === 'flex') closeVideoModal();
+                if (resourceModal.classList.contains('active')) closeResourceModal();
+            }
+        });
+
+        // Menu Buttons
+        const menuBtns = document.querySelectorAll('.menu-btn');
+        menuBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                playSound('click');
+                const href = btn.getAttribute('href');
+                if (href && href !== '#') {
+                    e.preventDefault();
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 100);
+                }
+            });
+        });
+
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (event) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        renderBooks();
+    </script>
+</body>
+</html>

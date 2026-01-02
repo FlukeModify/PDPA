@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>แบบทดสอบ - PDPA Learning Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
+        :root {
+            --primary-dark: #0F172A;
+            --accent-color: #3B82F6;
+            --text-muted: #64748B;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            font-family: 'Sarabun', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--primary-dark);
+            overflow-x: hidden;
+        }
+
+        /* ล็อกไม่ให้หน้าหลักเลื่อนเมื่อเปิด Modal */
+        body.no-scroll { overflow: hidden; position: fixed; width: 100%; }
+
+        h1, h2, h3, .menu-btn, .modal-title, .close-btn { font-family: 'Prompt', sans-serif; }
+
+        /* --- 2. PARTICLES BACKGROUND --- */
+        #particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- 3. HEADER --- */
+        header {
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #0F172A 0%, #1e3a8a 100%);
+            border-bottom: 3px solid var(--accent-color);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation: headerPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes headerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .brand h1 { 
+            font-size: 1.6rem; 
+            color: white; 
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            position: relative; z-index: 2;
+        }
+
+        .brand span { color: #60A5FA; }
+
+        /* --- 4. NAVIGATION --- */
+        .nav-wrapper {
+            position: sticky; 
+            top: 0; 
+            background: rgba(255,255,255,0.95);
+            padding: 15px 20px; 
+            border-bottom: 1px solid #eee; 
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .main-menu { 
+            display: flex; 
+            gap: 10px; 
+            overflow-x: auto; 
+            padding-bottom: 5px;
+            scrollbar-width: none;
+        }
+        
+        .main-menu::-webkit-scrollbar { display: none; }
+        
+        .menu-btn {
+            text-decoration: none; 
+            color: var(--text-muted); 
+            padding: 8px 16px;
+            border-radius: 20px; 
+            font-size: 0.9rem; 
+            white-space: nowrap; 
+            background: #f1f5f9;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .menu-btn:hover, .menu-btn.active { 
+            background: var(--primary-dark); 
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+        }
+
+        /* --- 5. QUIZ LIST --- */
+        .content { padding: 30px 20px; flex: 1; }
+
+        a.card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            margin-bottom: 20px;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+
+        .article-card { 
+            display: flex; 
+            gap: 20px; 
+            background: var(--card-bg); 
+            border: 2px solid #e2e8f0; 
+            padding: 25px; 
+            border-radius: 16px; 
+            align-items: center; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+        }
+
+        a.card-link:active .article-card { transform: scale(0.98); }
+
+        .icon-box { 
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            width: 60px; height: 60px; 
+            display: flex; align-items: center; justify-content: center; 
+            border-radius: 12px; font-size: 1.8rem; flex-shrink: 0; 
+            color: var(--accent-color);
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+        }
+
+        .text-box h3 { 
+            margin: 0 0 6px 0; 
+            font-size: 1.1rem; 
+            color: var(--primary-dark); 
+            font-weight: 600;
+        }
+
+        .text-box p { 
+            margin: 0; 
+            color: var(--text-muted); 
+            font-size: 0.9rem; 
+            line-height: 1.4;
+        }
+
+        .article-card::after {
+            content: '➜';
+            margin-left: auto; 
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            padding-left: 15px;
+            transition: transform 0.3s;
+        }
+
+        .article-card:hover::after {
+            transform: translateX(5px);
+            color: var(--accent-color);
+        }
+
+        /* --- 6. MODAL STYLES (MOBILE FIRST: FULL SCREEN) --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: white; /* เปลี่ยนพื้นหลัง Overlay เป็นขาวเลยเพื่อความเนียน */
+            z-index: 2000;
+            justify-content: center;
+            align-items: flex-start; /* เริ่มจากบนสุด */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-container {
+            background: white;
+            width: 100%;
+            height: 100%;       /* เต็มความสูง */
+            height: 100dvh;     /* เต็มจอแบบ dynamic viewport */
+            border-radius: 0;   /* ตัดขอบโค้งออก */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            flex-shrink: 0; /* ไม่ให้หัวข้อหด */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            display: flex; gap: 8px;
+        }
+
+        .close-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex; align-items: center; gap: 6px;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        }
+        
+        .close-btn:active { transform: scale(0.95); }
+
+        .modal-body {
+            flex: 1; 
+            width: 100%; 
+            background: #f1f5f9; 
+            position: relative;
+            overflow-y: auto; /* ให้เลื่อนเฉพาะเนื้อหาข้างใน */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-loader {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-muted); font-size: 0.9rem; z-index: 0;
+        }
+
+        iframe {
+            width: 100%; height: 100%;
+            border: none; display: block; position: relative; z-index: 1;
+        }
+
+        /* Active State */
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active .modal-container { transform: translateY(0); }
+
+        /* --- 7. RESPONSIVE (PC) --- */
+        @media (min-width: 768px) {
+            /* PC: Overlay สีดำจางๆ */
+            .modal-overlay { 
+                align-items: center; 
+                background-color: rgba(15, 23, 42, 0.85); 
+            }
+            
+            /* PC: ยังคงเต็มจอตามที่ขอก่อนหน้า */
+            .modal-container {
+                width: 100%;       
+                max-width: 100%;   
+                height: 100%;      
+                border-radius: 0;  
+                transform: none;   
+            }
+            
+            .modal-overlay.active .modal-container { transform: none; }
+            
+            /* Layout */
+            .content { max-width: 100%; } 
+            .nav-wrapper { padding: 15px; }
+            .main-menu { justify-content: center; }
+        }
+
+        .fab {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--accent-color), #2563EB);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.5rem;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            cursor: pointer; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="brand">
+                <h1>PDPA <span>Assessment</span></h1>
+            </div>
+        </header>
+
+        <div class="nav-wrapper">
+            <nav class="main-menu" id="mainMenu">
+                <a href="index.html" class="menu-btn">🏠 หน้าแรก</a>
+                <a href="lesson.html" class="menu-btn">📚 บทเรียน</a>
+                <a href="game.html" class="menu-btn">🎮 มินิเกม</a>
+                <a href="quiz.html" class="menu-btn active">📝 ประเมิน</a>
+
+                <a href="contact.html" class="menu-btn">💬 สอบถาม</a>
+            </nav>
+        </div>
+
+        <section class="content">
+            <a href="https://forms.gle/UvJqrMiJ1BmUQK6N6" 
+               class="card-link open-modal" 
+               data-title="แบบทดสอบก่อนเรียน"
+               onclick="playSound('click')">
+                <div class="article-card">
+                    <div class="icon-box">📝</div>
+                    <div class="text-box">
+                        <h3>แบบทดสอบก่อนเรียน (Pre-test)</h3>
+                        <p>วัดระดับความรู้พื้นฐานของคุณก่อนเข้าสู่บทเรียน</p>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScWVPOtotEK-GqewjWfYjgygHDSB7u_yt36aOOCWap0WtbkTw/viewform?usp=dialog" 
+               class="card-link open-modal" 
+               data-title="แบบทดสอบหลังเรียน"
+               onclick="playSound('click')">
+                <div class="article-card">
+                    <div class="icon-box">🏆</div>
+                    <div class="text-box">
+                        <h3>แบบทดสอบหลังเรียน (Post-test)</h3>
+                        <p>ประเมินผลสัมฤทธิ์และความเข้าใจหลังเรียนจบ</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdMGp36crJMQRwm2Yt_-WfFVDotcnevY4ZMjVrZJJJdyJB53Q/viewform?usp=dialog" 
+               class="card-link open-modal" 
+               data-title="แบบประเมินความพึงพอใจ"
+               onclick="playSound('click')">
+                <div class="article-card">
+                    <div class="icon-box">⭐</div>
+                    <div class="text-box">
+                        <h3>แบบประเมินความพึงพอใจ</h3>
+                        <p>แสดงความคิดเห็นเพื่อการพัฒนาสื่อการสอน</p>
+                    </div>
+                </div>
+            </a>
+        </section>
+    </div>
+
+    <div class="fab" onclick="window.location.href='contact.html'">❓</div>
+
+    <div id="webModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">📄 กำลังโหลด...</span>
+                <button class="close-btn" onclick="closeModal()">
+                    ✕ ปิด
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-loader">กำลังโหลดฟอร์ม...</div>
+                  <iframe id="modalFrame" src="" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       
+        const sounds = { click: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3' };
+        function playSound(type) { new Audio(sounds[type]).play().catch(() => {}); }
+
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const particles = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25; this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(59, 130, 246, 0.3)`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        for(let i=0; i<30; i++) particles.push(new Particle());
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        const modal = document.getElementById('webModal');
+        const modalFrame = document.getElementById('modalFrame');
+        const modalTitle = document.getElementById('modalTitle');
+        const body = document.body;
+
+        document.querySelectorAll('.open-modal').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                modalTitle.innerHTML = `📄 ${this.getAttribute('data-title')}`;
+                modalFrame.src = this.getAttribute('href');
+                modal.classList.add('active');
+                body.classList.add('no-scroll');
+            });
+        });
+
+        function closeModal() {
+            playSound('click');
+            modal.classList.remove('active');
+            body.classList.remove('no-scroll');
+            setTimeout(() => { modalFrame.src = ''; }, 300);
+        }
+
+        modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+    </script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>มินิเกม - PDPA Learning Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
+        :root {
+            --primary-dark: #0F172A;
+            --accent-color: #3B82F6;
+            --text-muted: #64748B;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --game-bg: #000000; /* สีพื้นหลังโหมดเกม */
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            font-family: 'Sarabun', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--primary-dark);
+            overflow-x: hidden;
+        }
+
+        /* ล็อกไม่ให้หน้าหลักเลื่อนเมื่อเปิดเกม */
+        body.no-scroll { overflow: hidden; position: fixed; width: 100%; }
+
+        h1, h2, h3, .menu-btn, .modal-title, .close-btn, .hero-btn { font-family: 'Prompt', sans-serif; }
+
+        /* --- 2. PARTICLES BACKGROUND --- */
+        #particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- 3. HEADER --- */
+        header {
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #0F172A 0%, #1e3a8a 100%);
+            border-bottom: 3px solid var(--accent-color);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation: headerPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes headerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .brand h1 { 
+            font-size: 1.6rem; 
+            color: white; 
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            position: relative; z-index: 2;
+        }
+
+        .brand span { color: #60A5FA; }
+
+        /* --- 4. NAVIGATION --- */
+        .nav-wrapper {
+            position: sticky; 
+            top: 0; 
+            background: rgba(255,255,255,0.95);
+            padding: 15px 20px; 
+            border-bottom: 1px solid #eee; 
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .main-menu { 
+            display: flex; 
+            gap: 10px; 
+            overflow-x: auto; 
+            padding-bottom: 5px;
+            scrollbar-width: none;
+        }
+        
+        .main-menu::-webkit-scrollbar { display: none; }
+        
+        .menu-btn {
+            text-decoration: none; 
+            color: var(--text-muted); 
+            padding: 8px 16px;
+            border-radius: 20px; 
+            font-size: 0.9rem; 
+            white-space: nowrap; 
+            background: #f1f5f9;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .menu-btn:hover, .menu-btn.active { 
+            background: var(--primary-dark); 
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+        }
+
+        /* --- 5. GAME HERO SECTION --- */
+        .content { 
+            padding: 40px 20px; 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-badge {
+            background: #EFF6FF;
+            color: var(--accent-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border: 1px solid #DBEAFE;
+        }
+
+        .hero-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #0F172A 0%, #3B82F6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .hero-desc {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Start Button */
+        .hero-btn {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulseBtn 2s infinite;
+        }
+
+        @keyframes pulseBtn {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        .hero-btn:active { transform: scale(0.95); }
+
+        /* Feature Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .feature-icon { font-size: 2rem; }
+        .feature-card h3 { font-size: 1rem; margin: 0; color: var(--primary-dark); }
+        .feature-card p { font-size: 0.85rem; margin: 0; color: var(--text-muted); }
+
+        /* --- 6. MODAL STYLES (Game Dark Mode) --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: black; /* ดำสนิทเพื่ออารมณ์เกม */
+            z-index: 2000;
+            justify-content: center;
+            align-items: flex-start;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-container {
+            background: #0F172A; /* พื้นหลัง Container สีเข้ม */
+            width: 100%;
+            height: 100dvh; /* Mobile Full Screen */
+            border-radius: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+
+        .modal-header {
+            padding: 10px 15px;
+            background: #1e293b; /* Header สีเข้ม */
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #e2e8f0; /* ตัวหนังสือสีขาว */
+            display: flex; gap: 8px;
+        }
+
+        .close-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .close-btn:active { transform: scale(0.95); }
+
+        .modal-body {
+            flex: 1; 
+            width: 100%; 
+            background: black; /* พื้นหลัง iframe ดำ */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-loader {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #94a3b8; font-size: 0.9rem; z-index: 0;
+        }
+
+        iframe {
+            width: 100%; height: 100%;
+            border: none; display: block; position: relative; z-index: 1;
+        }
+
+        /* Active State */
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active .modal-container { transform: translateY(0); }
+
+        /* --- 7. RESPONSIVE (PC) --- */
+        @media (min-width: 768px) {
+            .modal-overlay { 
+                align-items: center; 
+                background-color: rgba(0, 0, 0, 0.9); /* PC Overlay ดำโปร่งแสง */
+            }
+            
+            .modal-container {
+                width: 95%;       
+                max-width: 1200px;   
+                height: 90%;      
+                border-radius: 16px;
+                overflow: hidden;  
+                transform: scale(0.95);   
+            }
+            
+            .modal-overlay.active .modal-container { transform: scale(1); }
+            
+            .content { padding: 50px; }
+            .hero-title { font-size: 2.5rem; }
+            .features { grid-template-columns: repeat(3, 1fr); text-align: center; }
+            .feature-card { align-items: center; text-align: center; }
+            .nav-wrapper { padding: 15px; }
+            .main-menu { justify-content: center; }
+        }
+
+        .fab {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--accent-color), #2563EB);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.5rem;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            cursor: pointer; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="brand">
+                <h1>CYBER <span>ARMOR</span></h1>
+            </div>
+        </header>
+
+        <div class="nav-wrapper">
+            <nav class="main-menu" id="mainMenu">
+                <a href="index.html" class="menu-btn">🏠 หน้าแรก</a>
+                <a href="lesson.html" class="menu-btn">📚 บทเรียน</a>
+                <a href="game.html" class="menu-btn active">🎮 มินิเกม</a>
+                <a href="quiz.html" class="menu-btn">📝 ประเมิน</a>
+                
+                <a href="contact.html" class="menu-btn">💬 สอบถาม</a>
+            </nav>
+        </div>
+
+        <section class="content">
+            <div class="hero-badge">Simulation Game</div>
+            <h2 class="hero-title">ข้อมูลองค์กรกำลังรั่วไหล!</h2>
+            <p class="hero-desc">
+                สวมบทบาทเป็น <b>DPO (Data Protection Officer)</b> เพื่อตัดสินใจแก้ไขปัญหาวิกฤต 
+                ปกป้องข้อมูลสำคัญ และกอบกู้สถานการณ์ก่อนที่จะสายเกินไป
+            </p>
+
+            <a href="https://view.genially.com/68be7b12a456f6ebd8ff08d0/interactive-content-" 
+               class="hero-btn open-modal" 
+               data-title="🎮 CYBER ARMOR: The Mission"
+               onclick="playSound('start')">
+                🚀 เริ่มภารกิจกู้ข้อมูล
+            </a>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🧩</div>
+                    <h3>Scenario Base</h3>
+                    <p>เรียนรู้ผ่านสถานการณ์จำลองที่สมจริง</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Time Attack</h3>
+                    <p>ตัดสินใจภายใต้เวลาที่จำกัด</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Ranking</h3>
+                    <p>ทำคะแนนสูงสุดเพื่อเป็นสุดยอด DPO</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="fab" onclick="window.location.href='contact.html'">❓</div>
+
+    <div id="gameModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">🎮 Loading...</span>
+                <button class="close-btn" onclick="closeModal()">
+                    ✕ ออกจากเกม
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-loader">กำลังโหลดทรัพยากรเกม...</div>
+                <iframe id="modalFrame" src="" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Sound System ---
+        const sounds = { 
+            click: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3',
+            start: 'https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3' // เสียงเริ่มเกม
+        };
+        function playSound(type) { new Audio(sounds[type]).play().catch(() => {}); }
+
+        // --- 2. Particles Animation ---
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const particles = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25; this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(59, 130, 246, 0.3)`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        for(let i=0; i<30; i++) particles.push(new Particle());
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- 3. Modal Logic ---
+        const modal = document.getElementById('gameModal');
+        const modalFrame = document.getElementById('modalFrame');
+        const modalTitle = document.getElementById('modalTitle');
+        const body = document.body;
+
+        document.querySelectorAll('.open-modal').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = this.getAttribute('href');
+                const title = this.getAttribute('data-title');
+                
+                modalTitle.textContent = title;
+                modalFrame.src = url;
+                
+                modal.classList.add('active');
+                body.classList.add('no-scroll');
+            });
+        });
+
+        function closeModal() {
+            // Confirm before exit
+            if(confirm("ต้องการออกจากเกมหรือไม่? ความคืบหน้าอาจไม่ถูกบันทึก")) {
+                playSound('click');
+                modal.classList.remove('active');
+                body.classList.remove('no-scroll');
+                setTimeout(() => { modalFrame.src = ''; }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
