@@ -1027,10 +1027,10 @@
 
         // Lesson Data
         const lessons = [
-    { id: 1, title: "ความหมายของ PDPA", coverImage: "สื่อ/1.png", type: "YouTube", url: "https://www.youtube.com/embed/kudFsU9_IkI?autoplay=1" },
-    { id: 2, title: "PDPA ใกล้ตัว", coverImage: "สื่อ/2.png", type: "YouTube", url: "https://www.youtube.com/embed/CjBcrCBblAw?autoplay=1" },
-    { id: 3, title: "ตัวอย่างในชีวิตประจำวัน", coverImage: "สื่อ/3.png", type: "YouTube", url: "https://www.youtube.com/embed/lGQGsUgJG9I?autoplay=1" },
-    { id: 4, title: "โทษเมื่อกระทำความผิด", coverImage: "สื่อ/4.png", type: "YouTube", url: "https://www.youtube.com/embed/MsUFzNpDrY0?autoplay=1" }
+    { id: 1, title: "ความหมายของ PDPA", coverImage: "สื่อ/1.png", type: "youtube", url: "https://www.youtube.com/embed/kudFsU9_IkI?autoplay=1" },
+    { id: 2, title: "PDPA ใกล้ตัว", coverImage: "สื่อ/2.png", type: "youtube", url: "https://www.youtube.com/embed/CjBcrCBblAw?autoplay=1" },
+    { id: 3, title: "ตัวอย่างในชีวิตประจำวัน", coverImage: "สื่อ/3.png", type: "youtube", url: "https://www.youtube.com/embed/lGQGsUgJG9I?autoplay=1" },
+    { id: 4, title: "โทษเมื่อกระทำความผิด", coverImage: "สื่อ/4.png", type: "youtube", url: "https://www.youtube.com/embed/MsUFzNpDrY0?autoplay=1" }
         ];
 
         function renderBooks() {
@@ -1157,10 +1157,35 @@ videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId
         }, false);
 
         renderBooks();
+        function openLesson(id) {
+    playSound('click');
+    const data = lessons.find(l => l.id === id);
+    videoContainer.innerHTML = "";
+
+    if (data.type === 'youtube') {
+        // ใช้ลิงก์จาก data.url ได้เลยเพราะเป็นรูปแบบ embed อยู่แล้ว
+        // เพิ่ม ?autoplay=1 เพื่อให้เล่นอัตโนมัติ
+        const videoUrl = data.url.includes('?') ? `${data.url}&autoplay=1` : `${data.url}?autoplay=1`;
+        
+        videoContainer.innerHTML = `
+            <iframe 
+                src="${videoUrl}" 
+                allow="autoplay; encrypted-media; picture-in-picture" 
+                allowfullscreen>
+            </iframe>`;
+    } else if (data.type === 'video') {
+        // กรณีถ้ามีไฟล์ .mp4 ในอนาคต
+        videoContainer.innerHTML = `<video controls autoplay><source src="${data.url}" type="video/mp4"></video>`;
+    }
+
+    videoModal.style.display = "flex";
+    document.body.classList.add('no-scroll');
+}
     </script>
 </body>
 
 </html>
+
 
 
 
