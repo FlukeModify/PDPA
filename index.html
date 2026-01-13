@@ -34,50 +34,34 @@
         
         h1, h2, h3, .menu-btn { font-family: 'Prompt', sans-serif; }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            min-height: 100vh;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 30px rgba(0,0,0,0.05);
-            position: relative;
-        }
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    min-height: 100vh; /* บรรทัดนี้สำคัญมาก */
+    display: flex; /* และบรรทัดนี้ */
+    flex-direction: column; /* และบรรทัดนี้ */
+    /* ... ส่วนอื่นคงเดิม ... */
+}
 
-        /* Particles Background */
-        #particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* Enhanced Header */
+        /* ปรับปรุงส่วน Header ให้เป็นรูปภาพ */
+/* --- Header รูปภาพแบบเต็มจอ (Full Width) --- */
         header {
-            padding: 40px 30px;
-            background: linear-gradient(135deg, #0F172A 0%, #1e3a8a 100%);
-            border-bottom: 3px solid var(--accent-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
+            width: 100%;
+            line-height: 0;
             overflow: hidden;
-            z-index: 1;
+            background-color: #fff;
         }
 
-        header::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            animation: headerPulse 4s ease-in-out infinite;
+        header img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* ปรับความสูงให้เหมาะสมกับมือถือ ไม่ให้ยาวเกินไป */
+            max-height: 40vh; 
+            object-fit: cover;
         }
-
+   
         @keyframes headerPulse {
             0%, 100% { transform: translate(-25%, -25%) scale(1); }
             50% { transform: translate(-25%, -25%) scale(1.1); }
@@ -480,17 +464,49 @@
             .card-icon { font-size: 2rem; }
             .fab { width: 45px; height: 45px; font-size: 1.1rem; }
         }
+      /* Footer Styles - Compact Version */
+  .site-footer {
+      margin-top: auto;
+      padding: 15px 10px; /* ลด Padding บน-ล่าง จาก 30px เหลือ 15px */
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+  }
+
+  .footer-content p {
+      font-size: 0.75rem; /* ลดขนาดตัวอักษรลง (ประมาณ 12px) */
+      color: var(--text-muted);
+      margin-bottom: 5px; /* ลดระยะห่างด้านล่าง */
+  }
+
+  .footer-links {
+display: flex;
+            justify-content: center;
+            gap: 20px;
+      
+  }
+
+.footer-links a {
+            text-decoration: none;
+            /* ปรับสีให้เหมือนกับส่วน <p> ซึ่งปกติจะใช้สีจาก --text-muted หรือสีเทาเข้ม */
+            color: var(--text-muted); 
+            /* หากไม่ได้ตั้งค่าตัวแปรไว้ สามารถใช้สี code นี้แทนได้ครับ: color: #64748b; */
+            
+            font-size: 0.8rem;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            /* เมื่อเอาเมาส์วาง ให้สีเข้มขึ้นเล็กน้อยเพื่อให้รู้ว่ากดได้ */
+            color: #1e293b; 
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <canvas id="particles"></canvas>
-
-    <div class="container">
+<div class="container">
         <header>
-            <div class="brand">
-                <h1>PDPA <span>Learning Center</span></h1>
-                <p>ศูนย์การเรียนรู้กฎหมายคุ้มครองข้อมูลส่วนบุคคล</p>
-            </div>
+            <img src="สื่อ/banner.jpeg" alt="PDPA Learning Center">
         </header>
 
         <div class="nav-wrapper">
@@ -543,7 +559,17 @@
     <div class="fab" id="fab" title="ความช่วยเหลือ">
         ❓
     </div>
+<footer class="site-footer">
+            <div class="footer-content">
+                <p>© 2026 PDPA Learning Center | เรียนรู้เพื่อความปลอดภัยของข้อมูล</p>
+                <div class="footer-links">
+                    <a href="pro.html">จัดทำโดย ธนดล, ณัฐพัฒน์, นภัสวรรณ  </a>
+                    <p>นักศึกษาคณะครุศาสตร์ สาขาวิชาคอมพิวเตอร์ศึกษา มหาวิทยาลัยรายภัฏพระนครศรีอยุธยา</p>
 
+                </div>
+            </div>
+        </footer>
+    </div>
     <script>
         // Sound System
         const sounds = {
