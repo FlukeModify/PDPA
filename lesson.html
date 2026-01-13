@@ -36,7 +36,7 @@
         h1, h2, h3, .menu-btn, button { font-family: 'Prompt', sans-serif; }
 
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
             min-height: 100vh;
             background: #fff;
@@ -840,6 +840,51 @@
             }
             .help-btn { width: 45px; height: 45px; font-size: 1.3rem; }
         }
+            /* Footer Styles - Compact Version */
+  .site-footer {
+      margin-top: auto;
+      padding: 15px 10px; /* ลด Padding บน-ล่าง จาก 30px เหลือ 15px */
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+  }
+
+  .footer-content p {
+      font-size: 0.75rem; /* ลดขนาดตัวอักษรลง (ประมาณ 12px) */
+      color: var(--text-muted);
+      margin-bottom: 5px; /* ลดระยะห่างด้านล่าง */
+  }
+
+  .footer-links {
+display: flex;
+            justify-content: center;
+            gap: 20px;
+      
+  }
+
+.footer-links a {
+            text-decoration: none;
+            /* ปรับสีให้เหมือนกับส่วน <p> ซึ่งปกติจะใช้สีจาก --text-muted หรือสีเทาเข้ม */
+            color: var(--text-muted); 
+            /* หากไม่ได้ตั้งค่าตัวแปรไว้ สามารถใช้สี code นี้แทนได้ครับ: color: #64748b; */
+            
+            font-size: 0.8rem;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            /* เมื่อเอาเมาส์วาง ให้สีเข้มขึ้นเล็กน้อยเพื่อให้รู้ว่ากดได้ */
+            color: #1e293b; 
+            text-decoration: underline;
+        }
+
+  @media (max-width: 768px) {
+      .footer-links {
+    display: flex; /* มั่นใจว่าเป็น Flexbox */
+        flex-direction: column; /* เปลี่ยนจากแนวนอนเป็นแนวตั้ง */
+        gap: 10px; /* ระยะห่างระหว่างบรรทัด */
+      }
+  }
     </style>
 </head>
 <body>
@@ -926,7 +971,15 @@
             </div>
         </div>
     </div>
-
+<footer class="site-footer">
+            <div class="footer-content">
+                <p>© 2026 PDPA Learning Center | เรียนรู้เพื่อความปลอดภัยของข้อมูล</p>
+                <div class="footer-links">
+                    <a href="pro.html">จัดทำโดย ธนดล, ณัฐพัฒน์, นภัสวรรณ  </a>
+                    <p>นักศึกษาคณะครุศาสตร์ สาขาวิชาคอมพิวเตอร์ศึกษา มหาวิทยาลัยรายภัฏพระนครศรีอยุธยา</p>
+                </div>
+            </div>
+        </footer>
     <a href="contact.html" class="help-btn" title="ความช่วยเหลือ">?</a>
 
     <!-- Video Modal for Lessons -->
@@ -1185,7 +1238,6 @@ videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId
 </body>
 
 </html>
-
 
 
 
