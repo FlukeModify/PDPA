@@ -498,10 +498,10 @@
 
   .footer-links {
 display: flex;
-            justify-content: center;
-            gap: 20px;
-      
-  }
+    flex-direction: column; /* เปลี่ยนเป็นแนวตั้งเสมอ */
+    align-items: center;    /* จัดให้อยู่กึ่งกลาง */
+    gap: 8px;               /* ระยะห่างระหว่างข้อความ */
+}
 
 .footer-links a {
             text-decoration: none;
@@ -799,3 +799,4 @@ display: flex;
     </script>
 </body>
 </html>
+
