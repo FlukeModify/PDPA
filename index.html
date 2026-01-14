@@ -464,46 +464,67 @@
             .card-icon { font-size: 2rem; }
             .fab { width: 45px; height: 45px; font-size: 1.1rem; }
         }
-      /* Footer Styles - Compact Version */
+     /* Footer Styles - Compact Version */
   .site-footer {
       margin-top: auto;
-      padding: 15px 10px; /* ลด Padding บน-ล่าง จาก 30px เหลือ 15px */
+      padding: 15px 10px;
       background: #f8fafc;
       border-top: 1px solid #e2e8f0;
-      text-align: center;
+      text-align: center; /* ค่าเริ่มต้นสำหรับมือถือ */
   }
 
   .footer-content p {
-      font-size: 0.75rem; /* ลดขนาดตัวอักษรลง (ประมาณ 12px) */
+      font-size: 0.75rem;
       color: var(--text-muted);
-      margin-bottom: 5px; /* ลดระยะห่างด้านล่าง */
+      margin-bottom: 5px;
   }
 
+  /* ส่วนที่ปรับปรุง: ค่าเริ่มต้นสำหรับมือถือ (Mobile First) */
   .footer-links {
-
-display: flex;
-    flex-direction: column; /* เปลี่ยนเป็นแนวตั้งเสมอ */
-    align-items: center;    /* จัดให้อยู่กึ่งกลาง */
-    gap: 8px;               /* ระยะห่างระหว่างข้อความ */
-
-      
+      display: flex;
+      flex-direction: column; /* มือถือ: เรียงแนวตั้ง */
+      align-items: center;    
+      gap: 8px;              
   }
 
-.footer-links a {
-            text-decoration: none;
-            /* ปรับสีให้เหมือนกับส่วน <p> ซึ่งปกติจะใช้สีจาก --text-muted หรือสีเทาเข้ม */
-            color: var(--text-muted); 
-            /* หากไม่ได้ตั้งค่าตัวแปรไว้ สามารถใช้สี code นี้แทนได้ครับ: color: #64748b; */
-            
-            font-size: 0.8rem;
-            transition: opacity 0.3s;
-        }
+  .footer-links a {
+      text-decoration: none;
+      color: var(--text-muted); 
+      font-size: 0.8rem;
+      transition: opacity 0.3s;
+  }
 
-        .footer-links a:hover {
-            /* เมื่อเอาเมาส์วาง ให้สีเข้มขึ้นเล็กน้อยเพื่อให้รู้ว่ากดได้ */
-            color: #1e293b; 
-            text-decoration: underline;
-        }
+  .footer-links a:hover {
+      color: #1e293b; 
+      text-decoration: underline;
+  }
+
+  /* --- ส่วนที่เพิ่มเข้ามาสำหรับหน้าจอคอมพิวเตอร์ (Desktop) --- */
+  @media (min-width: 768px) {
+      .site-footer {
+          text-align: left; /* จัดข้อความชิดซ้าย */
+          padding: 20px 50px; /* เพิ่มพื้นที่ด้านข้างในคอม */
+      }
+
+      .footer-links {
+          flex-direction: row; /* เปลี่ยนเป็นแนวนอน */
+          justify-content: flex-start; /* จัดให้อยู่ทางซ้าย */
+          gap: 15px; /* เพิ่มระยะห่างระหว่างรายการ */
+          flex-wrap: wrap; /* ป้องกันการล้นหากข้อความยาวเกินไป */
+      }
+
+      /* เพิ่มเส้นแบ่งเล็กๆ ระหว่างชื่อผู้จัดทำกับชื่อคณะ (Optional) */
+      .footer-links a::after {
+          content: "|";
+          margin-left: 15px;
+          color: #e2e8f0;
+          pointer-events: none;
+      }
+      
+      .footer-links p {
+          margin-bottom: 0; /* เอา margin ออกเพื่อให้ขนานกับลิงก์ */
+      }
+  }
     </style>
 </head>
 <body>
@@ -732,5 +753,6 @@ display: flex;
     </script>
 </body>
 </html>
+
 
 
