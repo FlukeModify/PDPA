@@ -6,375 +6,676 @@
     <title>แบบทดสอบ - PDPA Learning Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 1. CORE VARIABLES & RESET --- */
-        :root {
-            --primary-dark: #0F172A;
-            --accent-color: #3B82F6;
-            --text-muted: #64748B;
-            --bg-color: #F8FAFC;
-            --card-bg: #FFFFFF;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body { 
-            font-family: 'Sarabun', sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--primary-dark);
-            overflow-x: hidden;
-        }
-
-        /* ล็อกไม่ให้หน้าหลักเลื่อนเมื่อเปิด Modal */
-        body.no-scroll { overflow: hidden; position: fixed; width: 100%; }
-
-        h1, h2, h3, .menu-btn, .modal-title, .close-btn { font-family: 'Prompt', sans-serif; }
-
-        /* --- 2. PARTICLES BACKGROUND --- */
-        #particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0; left: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-   .container {
-            max-width: 900px;
-            margin: 0 auto;
-            min-height: 100vh;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 30px rgba(0,0,0,0.05);
-            position: relative;
-        
-        }
-
-        /* --- 3. HEADER --- */
-        header {
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #0F172A 0%, #1e3a8a 100%);
-            border-bottom: 3px solid var(--accent-color);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            animation: headerPulse 4s ease-in-out infinite;
-        }
-
-        @keyframes headerPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .brand h1 { 
-            font-size: 1.6rem; 
-            color: white; 
-            font-weight: 700;
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            position: relative; z-index: 2;
-        }
-
-        .brand span { color: #60A5FA; }
-
-        /* --- 4. NAVIGATION --- */
-        .nav-wrapper {
-            position: sticky; 
-            top: 0; 
-            background: rgba(255,255,255,0.95);
-            padding: 15px 20px; 
-            border-bottom: 1px solid #eee; 
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        .main-menu { 
-            display: flex; 
-            gap: 10px; 
-            overflow-x: auto; 
-            padding-bottom: 5px;
-            scrollbar-width: none;
-        }
-        
-        .main-menu::-webkit-scrollbar { display: none; }
-        
-        .menu-btn {
-            text-decoration: none; 
-            color: var(--text-muted); 
-            padding: 8px 16px;
-            border-radius: 20px; 
-            font-size: 0.9rem; 
-            white-space: nowrap; 
-            background: #f1f5f9;
-            transition: all 0.3s;
-            flex-shrink: 0;
-        }
-
-        .menu-btn:hover, .menu-btn.active { 
-            background: var(--primary-dark); 
-            color: white;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
-        }
-
-        /* --- 5. QUIZ LIST --- */
-        .content { padding: 30px 20px; flex: 1; }
-
-        a.card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            margin-bottom: 20px;
-            cursor: pointer;
-            position: relative;
-            z-index: 2;
-        }
-
-        .article-card { 
-            display: flex; 
-            gap: 20px; 
-            background: var(--card-bg); 
-            border: 2px solid #e2e8f0; 
-            padding: 25px; 
-            border-radius: 16px; 
-            align-items: center; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .article-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-color);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-        }
-
-        a.card-link:active .article-card { transform: scale(0.98); }
-
-        .icon-box { 
-            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-            width: 60px; height: 60px; 
-            display: flex; align-items: center; justify-content: center; 
-            border-radius: 12px; font-size: 1.8rem; flex-shrink: 0; 
-            color: var(--accent-color);
-            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
-        }
-
-        .text-box h3 { 
-            margin: 0 0 6px 0; 
-            font-size: 1.1rem; 
-            color: var(--primary-dark); 
-            font-weight: 600;
-        }
-
-        .text-box p { 
-            margin: 0; 
-            color: var(--text-muted); 
-            font-size: 0.9rem; 
-            line-height: 1.4;
-        }
-
-        .article-card::after {
-            content: '➜';
-            margin-left: auto; 
-            font-size: 1.2rem;
-            color: #cbd5e1;
-            padding-left: 15px;
-            transition: transform 0.3s;
-        }
-
-        .article-card:hover::after {
-            transform: translateX(5px);
-            color: var(--accent-color);
-        }
-
-        /* --- 6. MODAL STYLES (MOBILE FIRST: FULL SCREEN) --- */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: white; /* เปลี่ยนพื้นหลัง Overlay เป็นขาวเลยเพื่อความเนียน */
-            z-index: 2000;
-            justify-content: center;
-            align-items: flex-start; /* เริ่มจากบนสุด */
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-container {
-            background: white;
-            width: 100%;
-            height: 100%;       /* เต็มความสูง */
-            height: 100dvh;     /* เต็มจอแบบ dynamic viewport */
-            border-radius: 0;   /* ตัดขอบโค้งออก */
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
-        }
-
-        .modal-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            flex-shrink: 0; /* ไม่ให้หัวข้อหด */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .modal-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: var(--primary-dark);
-            display: flex; gap: 8px;
-        }
-
-        .close-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: flex; align-items: center; gap: 6px;
-            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-        }
-        
-        .close-btn:active { transform: scale(0.95); }
-
-        .modal-body {
-            flex: 1; 
-            width: 100%; 
-            background: #f1f5f9; 
-            position: relative;
-            overflow-y: auto; /* ให้เลื่อนเฉพาะเนื้อหาข้างใน */
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .modal-loader {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--text-muted); font-size: 0.9rem; z-index: 0;
-        }
-
-        iframe {
-            width: 100%; height: 100%;
-            border: none; display: block; position: relative; z-index: 1;
-        }
-
-        /* Active State */
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-overlay.active .modal-container { transform: translateY(0); }
-
-        /* --- 7. RESPONSIVE (PC) --- */
-        @media (min-width: 768px) {
-            /* PC: Overlay สีดำจางๆ */
-            .modal-overlay { 
-                align-items: center; 
-                background-color: rgba(15, 23, 42, 0.85); 
-            }
-            
-            /* PC: ยังคงเต็มจอตามที่ขอก่อนหน้า */
-            .modal-container {
-                width: 100%;       
-                max-width: 100%;   
-                height: 100%;      
-                border-radius: 0;  
-                transform: none;   
-            }
-            
-            .modal-overlay.active .modal-container { transform: none; }
-            
-            /* Layout */
-            .content { max-width: 100%; } 
-            .nav-wrapper { padding: 15px; }
-            .main-menu { justify-content: center; }
-        }
-
-        .fab {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 50px; height: 50px;
-            background: linear-gradient(135deg, var(--accent-color), #2563EB);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 1.5rem;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
-            cursor: pointer; z-index: 1000;
-        }
-               /* Footer Styles - Compact Version */
-  .site-footer {
-      margin-top: auto;
-      padding: 15px 10px; /* ลด Padding บน-ล่าง จาก 30px เหลือ 15px */
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-      text-align: center;
-  }
-
-  .footer-content p {
-      font-size: 0.75rem; /* ลดขนาดตัวอักษรลง (ประมาณ 12px) */
-      color: var(--text-muted);
-      margin-bottom: 5px; /* ลดระยะห่างด้านล่าง */
-  }
-
-  .footer-links {
-display: flex;
-    flex-direction: column; /* เปลี่ยนเป็นแนวตั้งเสมอ */
-    align-items: center;    /* จัดให้อยู่กึ่งกลาง */
-    gap: 8px;               /* ระยะห่างระหว่างข้อความ */
+/* --- 1. CORE VARIABLES & RESET --- */
+:root {
+    --primary-blue: #0EA5E9;
+    --secondary-blue: #0284C7;
+    --light-blue: #E0F2FE;
+    --sky-blue: #7DD3FC;
+    --dark-blue: #0C4A6E;
+    --white: #FFFFFF;
+    --off-white: #F8FAFC;
+    --text-dark: #0F172A;
+    --text-gray: #64748B;
+    --gradient-1: linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%);
+    --gradient-2: linear-gradient(135deg, #7DD3FC 0%, #0EA5E9 100%);
+    --shadow-sm: 0 2px 8px rgba(14, 165, 233, 0.1);
+    --shadow-md: 0 4px 16px rgba(14, 165, 233, 0.15);
+    --shadow-lg: 0 8px 32px rgba(14, 165, 233, 0.2);
 }
 
-.footer-links a {
-            text-decoration: none;
-            /* ปรับสีให้เหมือนกับส่วน <p> ซึ่งปกติจะใช้สีจาก --text-muted หรือสีเทาเข้ม */
-            color: var(--text-muted); 
-            /* หากไม่ได้ตั้งค่าตัวแปรไว้ สามารถใช้สี code นี้แทนได้ครับ: color: #64748b; */
-            
-            font-size: 0.8rem;
-            transition: opacity 0.3s;
-        }
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
 
-        .footer-links a:hover {
-            /* เมื่อเอาเมาส์วาง ให้สีเข้มขึ้นเล็กน้อยเพื่อให้รู้ว่ากดได้ */
-            color: #1e293b; 
-            text-decoration: underline;
-        }
+body { 
+    font-family: 'Sarabun', sans-serif; 
+    background: linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 50%, #FFFFFF 100%);
+    background-attachment: fixed;
+    color: var(--text-dark);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+}
 
-  @media (max-width: 768px) {
-      .footer-links {
-    display: flex; /* มั่นใจว่าเป็น Flexbox */
-        flex-direction: column; /* เปลี่ยนจากแนวนอนเป็นแนวตั้ง */
-        gap: 10px; /* ระยะห่างระหว่างบรรทัด */
-      }
-  }
+/* Animated Background Bubbles */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body::before {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+    top: -200px;
+    right: -200px;
+    animation: float1 20s ease-in-out infinite;
+}
+
+body::after {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(125, 211, 252, 0.15) 0%, transparent 70%);
+    bottom: -150px;
+    left: -150px;
+    animation: float2 15s ease-in-out infinite;
+}
+
+@keyframes float1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-50px, 50px) scale(1.1); }
+}
+
+@keyframes float2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, -50px) scale(1.15); }
+}
+
+body.no-scroll { overflow: hidden; position: fixed; width: 100%; }
+
+h1, h2, h3, .menu-btn, .modal-title, .close-btn { font-family: 'Prompt', sans-serif; }
+
+/* --- 2. PARTICLES BACKGROUND --- */
+#particles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 60px rgba(14, 165, 233, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+/* --- 3. HEADER (เปลี่ยนเป็นรูปภาพ) --- */
+header {
+    width: 100%;
+    line-height: 0;
+    overflow: hidden;
+    background: var(--gradient-1);
+    position: relative;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3));
+}
+
+header img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 40vh; 
+    object-fit: cover;
+    filter: brightness(1.05) contrast(1.1);
+}
+
+/* --- 4. NAVIGATION --- */
+.nav-wrapper {
+    position: sticky; 
+    top: 0; 
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.98), rgba(240, 249, 255, 0.98));
+    padding: 20px; 
+    border-bottom: 2px solid rgba(14, 165, 233, 0.1);
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-md);
+}
+
+.main-menu { 
+    display: flex; 
+    gap: 12px; 
+    overflow-x: auto; 
+    padding: 5px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.main-menu::-webkit-scrollbar { display: none; }
+
+.menu-btn {
+    text-decoration: none; 
+    color: var(--text-gray); 
+    padding: 12px 24px;
+    border-radius: 30px; 
+    font-size: 0.95rem; 
+    font-weight: 500;
+    white-space: nowrap; 
+    background: white;
+    border: 2px solid rgba(14, 165, 233, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.menu-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--gradient-2);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+    z-index: -1;
+}
+
+.menu-btn:hover::before {
+    width: 300%;
+    height: 300%;
+}
+
+.menu-btn:hover { 
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-blue);
+}
+
+.menu-btn.active { 
+    background: var(--gradient-1);
+    color: white;
+    transform: scale(1.05);
+    border-color: var(--secondary-blue);
+    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.4);
+}
+
+/* --- 5. QUIZ LIST --- */
+.content { 
+    padding: 40px 30px; 
+    flex: 1;
+}
+
+a.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    margin-bottom: 25px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+
+.article-card { 
+    display: flex; 
+    gap: 20px; 
+    background: white;
+    border: 2px solid rgba(14, 165, 233, 0.1);
+    padding: 30px; 
+    border-radius: 24px; 
+    align-items: center; 
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.article-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-2);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-blue);
+    box-shadow: 0 20px 50px rgba(14, 165, 233, 0.25);
+}
+
+.article-card:hover::before {
+    opacity: 0.05;
+}
+
+a.card-link:active .article-card { 
+    transform: scale(0.98); 
+}
+
+.icon-box { 
+    background: linear-gradient(135deg, #E0F2FE 0%, #DBEAFE 100%);
+    width: 70px; 
+    height: 70px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 16px; 
+    font-size: 2rem; 
+    flex-shrink: 0; 
+    color: var(--primary-blue);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.text-box { 
+    position: relative;
+    z-index: 1;
+}
+
+.text-box h3 { 
+    margin: 0 0 8px 0; 
+    font-size: 1.2rem; 
+    color: var(--dark-blue); 
+    font-weight: 600;
+}
+
+.text-box p { 
+    margin: 0; 
+    color: var(--text-gray); 
+    font-size: 0.95rem; 
+    line-height: 1.6;
+}
+
+.article-card::after {
+    content: '➜';
+    margin-left: auto; 
+    font-size: 1.4rem;
+    color: #cbd5e1;
+    padding-left: 15px;
+    transition: all 0.4s;
+    position: relative;
+    z-index: 1;
+}
+
+.article-card:hover::after {
+    transform: translateX(8px);
+    color: var(--primary-blue);
+}
+
+/* --- 6. MODAL STYLES --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: white;
+    z-index: 2000;
+    justify-content: center;
+    align-items: flex-start;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-container {
+    background: white;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 2px solid rgba(14, 165, 233, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #fff, #F0F9FF);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.modal-title {
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--dark-blue);
+    display: flex; 
+    gap: 8px;
+}
+
+.close-btn {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex; 
+    align-items: center; 
+    gap: 6px;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    transition: all 0.3s;
+}
+
+.close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+}
+
+.close-btn:active { 
+    transform: scale(0.95); 
+}
+
+.modal-body {
+    flex: 1; 
+    width: 100%; 
+    background: #f1f5f9; 
+    position: relative;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal-loader {
+    position: absolute; 
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-gray); 
+    font-size: 0.95rem; 
+    z-index: 0;
+}
+
+iframe {
+    width: 100%; 
+    height: 100%;
+    border: none; 
+    display: block; 
+    position: relative; 
+    z-index: 1;
+}
+
+.modal-overlay.active { 
+    display: flex; 
+    opacity: 1; 
+}
+
+.modal-overlay.active .modal-container { 
+    transform: translateY(0); 
+}
+
+/* --- 7. FAB Button --- */
+.fab {
+    position: fixed; 
+    bottom: 30px; 
+    right: 30px;
+    width: 65px; 
+    height: 65px;
+    background: var(--gradient-1);
+    border-radius: 50%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    color: white; 
+    font-size: 1.6rem;
+    box-shadow: 0 6px 30px rgba(14, 165, 233, 0.5);
+    cursor: pointer; 
+    z-index: 1000;
+    transition: all 0.4s;
+    animation: pulse 2.5s infinite;
+    border: 3px solid white;
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        box-shadow: 0 6px 30px rgba(14, 165, 233, 0.5);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 8px 40px rgba(14, 165, 233, 0.7);
+        transform: scale(1.05);
+    }
+}
+
+.fab:hover {
+    transform: scale(1.15) rotate(90deg);
+    box-shadow: 0 8px 40px rgba(14, 165, 233, 0.7);
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+/* --- 8. Footer --- */
+.site-footer {
+    margin-top: auto;
+    padding: 25px 30px; /* เพิ่ม padding ซ้าย-ขวาให้พอดีกับ container */
+    background: linear-gradient(to right, var(--light-blue), var(--white));
+    border-top: 2px solid rgba(14, 165, 233, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 1000px; /* ปรับตัวเลขนี้ให้เท่ากับ Container ด้านบน */
+    margin: 0 auto;    /* จัดให้อยู่กึ่งกลาง */
+    padding: 20px;     /* เว้นระยะขอบในให้สวยงาม */
+    box-sizing: border-box; /* สำคัญ: เพื่อไม่ให้ padding ไปดันความกว้างเพิ่ม */
+}
+
+footer-content {
+    max-width: 900px; /* ต้องเท่ากับความกว้างของ .container */
+    margin: 0 auto;    /* จัดให้อยู่กึ่งกลางหน้าจอ */
+    padding: 30px 60px; /* ปรับให้เท่ากับ .content เพื่อให้ข้อความแนวตรงกัน */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-content p {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    gap: 8px;              
+}
+
+.footer-links a,
+.footer-links p {
+    text-decoration: none;
+    color: var(--text-gray); 
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--primary-blue);
+    transform: translateY(-2px);
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+    .site-footer {
+        text-align: left;
+        padding: 30px 50px;
+    }
+
+    .footer-links {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a::after {
+        content: "|";
+        margin-left: 20px;
+        color: rgba(14, 165, 233, 0.3);
+        pointer-events: none;
+    }
+    
+    .footer-links a:last-child::after {
+        content: none;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 20px; /* ลด padding ในมือถือให้พอดี */
+    }
+
+    .footer-content p {
+        font-size: 0.8rem;
+    }
+
+    .footer-links a,
+    .footer-links p {
+        font-size: 0.8rem;
+    }
+}
+
+/* --- 9. RESPONSIVE --- */
+@media (min-width: 768px) {
+    .modal-overlay { 
+        align-items: center; 
+        background-color: rgba(15, 23, 42, 0.85); 
+    }
+    
+    .modal-container {
+        width: 100%;       
+        max-width: 100%;   
+        height: 100%;      
+        border-radius: 0;  
+        transform: none;   
+    }
+    
+    .modal-overlay.active .modal-container { 
+        transform: none; 
+    }
+    
+    .nav-wrapper { 
+        padding: 20px; 
+    }
+    
+    .main-menu { 
+        justify-content: center; 
+    }
+
+    .site-footer {
+        text-align: left;
+        padding: 30px 50px;
+    }
+
+    .footer-links {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a::after {
+        content: "|";
+        margin-left: 20px;
+        color: rgba(14, 165, 233, 0.3);
+        pointer-events: none;
+    }
+    
+    .footer-links a:last-child::after {
+        content: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 25px 20px;
+    }
+
+    .article-card {
+        padding: 25px;
+        gap: 15px;
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+
+    .text-box h3 {
+        font-size: 1.1rem;
+    }
+
+    .fab {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+        font-size: 1.4rem;
+    }
+
+    #particles {
+        opacity: 0.3;
+    }
+}
+
+/* Touch Device Optimization */
+@media (hover: none) and (pointer: coarse) {
+    .article-card:hover {
+        transform: none;
+    }
+    
+    .article-card:active {
+        transform: scale(0.98);
+    }
+    
+    .menu-btn:hover {
+        transform: none;
+    }
+    
+    .menu-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .fab:hover {
+        transform: none;
+    }
+    
+    .fab:active {
+        transform: scale(0.9);
+    }
+}
     </style>
 </head>
 <body>
     <canvas id="particles"></canvas>
 
     <div class="container">
-        <header>
-            <div class="brand">
-                <h1>PDPA <span>Assessment</span></h1>
-            </div>
-        </header>
+<header>
+    <img src="สื่อ/benner3.jpg" alt="PDPA Assessment">
+</header>
 
         <div class="nav-wrapper">
             <nav class="main-menu" id="mainMenu">
@@ -445,15 +746,16 @@ display: flex;
             </div>
         </div>
     </div>
-<footer class="site-footer">
+      <footer class="site-footer">
             <div class="footer-content">
                 <p>© 2026 PDPA Learning Center | เรียนรู้เพื่อความปลอดภัยของข้อมูล</p>
                 <div class="footer-links">
-                    <a href="pro.html">จัดทำโดย ธนดล, ณัฐพัฒน์, นภัสวรรณ  </a>
+                    <a href="pro.html">จัดทำโดย ธนดล, ณัฐพัฒน์, นภัสวรรณ</a>
                     <p>คณะครุศาสตร์ สาขาวิชาคอมพิวเตอร์ศึกษา มหาวิทยาลัยรายภัฏพระนครศรีอยุธยา</p>
                 </div>
             </div>
         </footer>
+    </div>
     <script>
        
         const sounds = { click: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3' };
@@ -513,5 +815,3 @@ display: flex;
     </script>
 </body>
 </html>
-
-
