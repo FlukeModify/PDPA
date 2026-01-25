@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="th" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทีมผู้จัดทำ - PDPA Learning Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Prompt', sans-serif; 
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0f1729 100%);
+            overflow-x: hidden; 
+            position: relative;
+        }
+        
+        /* Enhanced Grid Pattern with Glow */
+        .bg-grid {
+            background-size: 50px 50px;
+            background-image: 
+                radial-gradient(circle, rgba(56, 189, 248, 0.1) 1px, transparent 1px),
+                linear-gradient(to right, rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 40%, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 40%, black 40%, transparent 100%);
+        }
+
+        /* Animated Gradient Blobs */
+        .blob {
+            position: fixed;
+            filter: blur(120px);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.5;
+            mix-blend-mode: screen;
+        }
+        
+        .blob-1 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+            top: -20%;
+            left: -15%;
+            animation: float1 20s infinite ease-in-out;
+        }
+        
+        .blob-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+            bottom: -15%;
+            right: -10%;
+            animation: float2 18s infinite ease-in-out;
+        }
+        
+        .blob-3 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+            top: 40%;
+            left: 50%;
+            animation: float3 22s infinite ease-in-out;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(50px, 80px) rotate(120deg); }
+            66% { transform: translate(-30px, 40px) rotate(240deg); }
+        }
+        
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-60px, -50px) rotate(-120deg); }
+            66% { transform: translate(40px, -70px) rotate(-240deg); }
+        }
+        
+        @keyframes float3 {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+            50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.2); }
+        }
+
+        /* Premium Text Gradient */
+        .text-premium-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 25%, #c084fc 50%, #e879f9 75%, #38bdf8 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Ultra Premium Glass Card */
+        .glass-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.3) 0%, rgba(51, 65, 85, 0.2) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s;
+        }
+        
+        .glass-card:hover::before {
+            left: 100%;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(56, 189, 248, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* Enhanced Avatar with Glow */
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .avatar-glow {
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .glass-card:hover .avatar-glow {
+            opacity: 1;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.95); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.6; }
+        }
+        
+        .avatar-img {
+            position: relative;
+            z-index: 10;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .glass-card:hover .avatar-img {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        /* Skill Badge Animation */
+        .skill-badge {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .skill-badge:hover::before {
+            left: 100%;
+        }
+        
+        .skill-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Animated Border */
+        .animated-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+            opacity: 0.5;
+            animation: borderSlide 3s ease-in-out infinite;
+        }
+        
+        @keyframes borderSlide {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        /* Logo Container Enhancement */
+        .logo-container {
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(139, 92, 246, 0.2));
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+            filter: blur(10px);
+        }
+        
+        .logo-container:hover::before {
+            opacity: 1;
+        }
+        
+        .logo-container:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { 
+            background: linear-gradient(180deg, #0a0e1a, #1a1f35);
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #38bdf8, #8b5cf6);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover { 
+            background: linear-gradient(180deg, #0ea5e9, #7c3aed);
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .delay-4 { animation-delay: 0.4s; opacity: 0; }
+    </style>
+</head>
+<body class="h-full text-slate-200 selection:bg-sky-500/30">
+
+    <div class="fixed inset-0 bg-grid pointer-events-none"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 py-12">
+        
+        <nav class="flex flex-col md:flex-row justify-between items-center gap-6 mb-20 fade-in-up">
+            <button onclick="goBack()" class="flex items-center gap-3 bg-gradient-to-r from-slate-800/60 to-slate-800/40 hover:from-slate-700/80 hover:to-slate-700/60 text-white px-8 py-3.5 rounded-full transition-all border border-slate-700/50 hover:border-sky-500/50 group backdrop-blur-md shadow-lg hover:shadow-sky-500/20">
+                <svg class="w-5 h-5 text-slate-400 group-hover:text-sky-400 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span class="font-semibold group-hover:text-sky-100">ย้อนกลับ</span>
+            </button>
+
+            <div class="logo-container flex items-center gap-10 px-14 py-6 bg-gradient-to-r from-white/10 to-white/15 rounded-full backdrop-blur-xl border border-white/25 shadow-2xl">
+                <img 
+                    src="สื่อ/LOGO.png" 
+                    onclick="openImage(this.src)"
+                    alt="University Logo" 
+                    class="h-24 w-auto object-contain drop-shadow-[0_4px_20px_rgba(255,255,255,0.3)] hover:drop-shadow-[0_8px_30px_rgba(56,189,248,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer brightness-110"
+                >
+                <div class="h-16 w-[2px] bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
+                <img 
+                    src="สื่อ/com.png" 
+                    onclick="openImage(this.src)"
+                    alt="Dept Logo" 
+                    class="h-24 w-auto object-contain drop-shadow-[0_4px_20px_rgba(255,255,255,0.3)] hover:drop-shadow-[0_8px_30px_rgba(139,92,246,0.5)] hover:scale-110 transition-all duration-300 cursor-pointer brightness-110"
+                >
+            </div>
+        </nav>
+
+        <div id="imageModal" onclick="closeImage()" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 cursor-zoom-out opacity-0 transition-opacity duration-300">
+            <img id="modalImg" src="" class="max-w-full max-h-[90vh] rounded-2xl shadow-[0_0_80px_rgba(56,189,248,0.6)] scale-90 transition-transform duration-300 transform">
+            <button class="absolute top-8 right-8 text-white/80 hover:text-white text-4xl font-light w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all">×</button>
+            <p class="absolute bottom-10 text-slate-400 text-sm bg-black/50 px-6 py-3 rounded-full border border-white/10 backdrop-blur-sm">
+                คลิกพื้นที่ว่างเพื่อปิด
+            </p>
+        </div>
+
+        <header class="text-center mb-32 relative fade-in-up delay-1">
+            <div class="inline-block relative">
+                <div class="absolute inset-0 blur-3xl bg-gradient-to-r from-sky-500/30 via-purple-500/30 to-pink-500/30 rounded-full animate-pulse"></div>
+                <h1 class="relative text-6xl md:text-8xl font-bold mb-8 text-premium-gradient italic tracking-tight drop-shadow-2xl">
+                    ทีมผู้จัดทำ
+                </h1>
+            </div>
+            <div class="max-w-3xl mx-auto">
+                <p class="text-2xl md:text-3xl text-white font-semibold mb-3 drop-shadow-lg">
+                    คณะครุศาสตร์ สาขาวิชาคอมพิวเตอร์ศึกษา
+                </p>
+                <div class="inline-block px-6 py-2 bg-gradient-to-r from-sky-500/20 to-purple-500/20 rounded-full border border-white/20 backdrop-blur-sm">
+                    <p class="text-slate-300 text-lg">มหาวิทยาลัยราชภัฏพระนครศรีอยุธยา</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 px-4">
+            
+            <!-- Card 1: ธนดล -->
+            <div class="glass-card rounded-[3rem] p-10 text-center relative fade-in-up delay-2">
+                <div class="animated-border text-sky-400"></div>
+                
+                <div class="avatar-wrapper mb-8">
+                    <div class="avatar-glow bg-sky-500/50 blur-2xl"></div>
+                    <img src="https://ui-avatars.com/api/?name=Thanadon&background=0ea5e9&color=fff&size=300&bold=true" alt="ธนดล เมฆย้อย" class="avatar-img w-40 h-40 rounded-full object-cover border-4 border-slate-700/50 shadow-2xl mx-auto ring-4 ring-sky-500/20">
+                </div>
+
+                <h3 class="text-3xl font-bold text-white mb-2 group-hover:text-sky-300 transition-colors drop-shadow-lg">ธนดล</h3>
+                <div class="inline-block mb-8">
+                    <p class="text-sky-400 text-sm font-bold tracking-widest uppercase bg-gradient-to-r from-sky-500/20 to-sky-600/20 py-2 px-5 rounded-full border border-sky-500/30 shadow-lg backdrop-blur-sm">Lead Developer</p>
+                </div>
+                
+                <p class="text-slate-300 text-base leading-relaxed mb-10 px-4">
+                    วางโครงสร้างระบบ Full-stack และเขียนโค้ด Backend ให้ทำงานได้อย่างราบรื่นและปลอดภัย
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <span class="skill-badge px-4 py-2 rounded-xl bg-gradient-to-r from-slate-800/80 to-slate-800/60 text-sky-300 text-sm font-medium border border-slate-700/50 hover:border-sky-500/50 cursor-pointer shadow-lg">Github</span>
+                    <span class="skill-badge px-4 py-2 rounded-xl bg-gradient-to-r from-slate-800/80 to-slate-800/60 text-sky-300 text-sm font-medium border border-slate-700/50 hover:border-sky-500/50 cursor-pointer shadow-lg">Codeing</span>
+                </div>
+            </div>
+
+            <!-- Card 2: ณัฐพัฒน์ -->
+            <div class="glass-card rounded-[3rem] p-10 text-center relative fade-in-up delay-3">
+                <div class="animated-border text-purple-400"></div>
+                
+                <div class="avatar-wrapper mb-8">
+                    <div class="avatar-glow bg-purple-500/50 blur-2xl"></div>
+                    <img src="https://ui-avatars.com/api/?name=Nattapat&background=8b5cf6&color=fff&size=300&bold=true" alt="ณัฐพัฒน์" class="avatar-img w-40 h-40 rounded-full object-cover border-4 border-slate-700/50 shadow-2xl mx-auto ring-4 ring-purple-500/20">
+                </div>
+
+                <h3 class="text-3xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors drop-shadow-lg">ณัฐพัฒน์</h3>
+                <div class="inline-block mb-8">
+                    <p class="text-purple-400 text-sm font-bold tracking-widest uppercase bg-gradient-to-r from-purple-500/20 to-purple-600/20 py-2 px-5 rounded-full border border-purple-500/30 shadow-lg backdrop-blur-sm">Content Strategist</p>
+                </div>
+                
+                <p class="text-slate-300 text-base leading-relaxed mb-10 px-4">
+                    วิเคราะห์ข้อมูล PDPA เชิงลึก และร้อยเรียงเนื้อหาให้เข้าใจง่ายสำหรับผู้ใช้งานทุกระดับ
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <span class="skill-badge px-4 py-2 rounded-xl bg-gradient-to-r from-slate-800/80 to-slate-800/60 text-purple-300 text-sm font-medium border border-slate-700/50 hover:border-purple-500/50 cursor-pointer shadow-lg">Research</span>
+                    <span class="skill-badge px-4 py-2 rounded-xl bg-gradient-to-r from-slate-800/80 to-slate-800/60 text-purple-300 text-sm font-medium border border-slate-700/50 hover:border-purple-500/50 cursor-pointer shadow-lg">Data Analysis</span>
+                </div>
+            </div>
+
+            <!-- Card 3: นภัสวรรณ -->
+            <div class="glass-card rounded-[3rem] p-10 text-center relative fade-in-up delay-4">
+                <div class="animated-border text-pink-400"></div>
+                
+                <div class="avatar-wrapper mb-8">
+                    <div class="avatar-glow bg-pink-500/50 blur-2xl"></div>
+                    <img src="https://ui-avatars.com/api/?name=Napassawan&background=ec4899&color=fff&size=300&bold=true" alt="นภัสวรรณ" class="avatar-img w-40 h-40 rounded-full object-cover border-4 border-slate-700/50 shadow-2xl mx-auto ring-4 ring-pink-500/20">
+                </div>
+
+                <h3 class="text-3xl font-bold text-white mb-2 group-hover:text-pink-300 transition-colors drop-shadow-lg">นภัสวรรณ</h3>
+                <div class="inline-block mb-8">
+                    <p class="text-pink-400 text-sm font-bold tracking-widest uppercase bg-gradient-to-r from-pink-500/20 to-pink-600/20 py-2 px-5 rounded-full border border-pink-500/30 shadow-lg backdrop-blur-sm">UI/UX Designer</p>
+                </div>
+                
+                <p class="text-slate-300 text-base leading-relaxed mb-10 px-4">
+                    สร้างสรรค์ Interface และกราฟิก ที่ผสมผสานความสวยงามกับประสบการณ์การใช้งานที่ดีเยี่ยม
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <span class="skill-badge px-4 py-2 rounded-xl bg-gradient-to-r from-slate-800/80 to-slate-800/60 text-pink-300 text-sm font-medium border border-slate-700/50 hover:border-pink-500/50 cursor-pointer shadow-lg">Figma</span>
+                    <span class="skill-badge px-4 py-2 rounded-xl bg-gradient-to-r from-slate-800/80 to-slate-800/60 text-pink-300 text-sm font-medium border border-slate-700/50 hover:border-pink-500/50 cursor-pointer shadow-lg">Vector Art</span>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="mt-40 text-center relative">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-[2px] bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
+            <div class="pt-12 pb-8">
+                <p class="text-slate-500 text-xs tracking-[0.3em] uppercase mb-4 font-semibold">Powered by</p>
+                <p class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-purple-400 font-bold text-xl mb-2 hover:from-sky-300 hover:to-purple-300 transition-all cursor-pointer">สาขาวิชาคอมพิวเตอร์ศึกษา ARU</p>
+                <p class="text-slate-600 text-xs mt-6 font-mono tracking-wider">© 2024 PDPA Learning Center. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function goBack() {
+            if (document.referrer !== "") {
+                window.location.href = document.referrer;
+            } else {
+                window.history.back();
+            }
+        }
+
+        function openImage(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            
+            modalImg.src = src;
+            modal.classList.remove('hidden');
+            
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalImg.classList.remove('scale-90');
+                modalImg.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeImage() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+
+            modal.classList.add('opacity-0');
+            modalImg.classList.remove('scale-100');
+            modalImg.classList.add('scale-90');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modalImg.src = "";
+            }, 300);
+        }
+    </script>
+</body>
+</html>
