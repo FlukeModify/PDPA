@@ -6,897 +6,1320 @@
     <title>บทเรียน - PDPA Interactive Story</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-dark: #0F172A;
-            --accent-color: #3B82F6;
-            --text-muted: #64748B;
-            --bg-color: #F8FAFC;
-            --card-bg: #FFFFFF;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-        }
-        
-        body { 
-            font-family: 'Sarabun', sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--primary-dark);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        body.no-scroll { overflow: hidden; position: fixed; width: 100%; }
-        
-        h1, h2, h3, .menu-btn, button { font-family: 'Prompt', sans-serif; }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            min-height: 100vh;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 30px rgba(0,0,0,0.05);
-            position: relative;
-        }
-
-        #particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        header {
-            padding: 40px 30px;
-            background: linear-gradient(135deg, #0F172A 0%, #1e3a8a 100%);
-            border-bottom: 3px solid var(--accent-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            animation: headerPulse 4s ease-in-out infinite;
-        }
-
-        @keyframes headerPulse {
-            0%, 100% { transform: translate(-25%, -25%) scale(1); }
-            50% { transform: translate(-25%, -25%) scale(1.1); }
-        }
-
-        .brand { position: relative; z-index: 2; }
-        .brand h1 { 
-            font-size: 1.8rem; 
-            color: white;
-            font-weight: 700;
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            animation: titleGlow 2s ease-in-out infinite;
-        }
-        
-        @keyframes titleGlow {
-            0%, 100% { text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-            50% { text-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
-        }
-
-        .brand span { 
-            color: #60A5FA;
-            display: inline-block;
-            animation: bounce 2s ease-in-out infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .brand p { color: #cbd5e1; font-size: 0.9rem; margin-top: 5px; }
-
-        .nav-wrapper {
-            position: sticky; 
-            top: 0; 
-            background: rgba(255,255,255,0.95);
-            padding: 15px 20px; 
-            border-bottom: 1px solid #eee; 
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        .main-menu { 
-            display: flex; 
-            gap: 10px; 
-            overflow-x: auto; 
-            padding-bottom: 5px;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-            scroll-snap-type: x proximity;
-            scroll-behavior: smooth;
-        }
-        
-        .main-menu::-webkit-scrollbar { display: none; }
-        
-        .menu-btn {
-            text-decoration: none; 
-            color: var(--text-muted); 
-            padding: 8px 16px;
-            border-radius: 20px; 
-            font-size: 0.9rem; 
-            white-space: nowrap; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #f1f5f9;
-            position: relative;
-            overflow: hidden;
-            flex-shrink: 0;
-            scroll-snap-align: start;
-            user-select: none;
-        }
-
-        .menu-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(59, 130, 246, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-
-        .menu-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .menu-btn:hover, .menu-btn.active { 
-            background: var(--primary-dark); 
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
-        }
-
-        .menu-btn.active {
-            transform: translateY(0);
-        }
-
-        .library-section { 
-            padding: 60px 40px; 
-            text-align: center;
-            background: linear-gradient(135deg, #EFF6FF 0%, #FFFFFF 100%);
-            position: relative;
-        }
-
-        .library-section::before {
-            content: '📚';
-            position: absolute;
-            font-size: 15rem;
-            opacity: 0.03;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-            animation: floatBook 6s ease-in-out infinite;
-        }
-
-        @keyframes floatBook {
-            0%, 100% { transform: translate(-50%, -50%) rotate(-15deg); }
-            50% { transform: translate(-50%, -45%) rotate(-10deg); }
-        }
-
-        .library-title { 
-            margin-bottom: 50px; 
-            font-size: 2rem;
-            color: var(--primary-dark);
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .library-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--accent-color);
-            border-radius: 2px;
-        }
-
-        .book-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px; 
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .book-item { 
-            cursor: pointer; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-            position: relative;
-        }
-
-        .book-item:hover { 
-            transform: translateY(-15px) scale(1.05);
-            z-index: 10;
-        }
-
-        .book-item:active {
-            transform: translateY(-12px) scale(1.03);
-        }
-
-        .book-item:hover .book-cover {
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-        }
-
-        .book-cover {
-            width: 100%; 
-            aspect-ratio: 3/4; 
-            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-            border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 8px 12px 20px rgba(0,0,0,0.15);
-            position: relative; 
-            overflow: hidden;
-            border-left: 6px solid rgba(0,0,0,0.1);
-            transition: all 0.4s ease;
-        }
-
-        .book-cover::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.6s;
-        }
-
-        .book-item:hover .book-cover::before {
-            left: 100%;
-        }
-
-        .book-cover img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block;
-            transition: transform 0.4s ease;
-        }
-
-        .book-item:hover .book-cover img {
-            transform: scale(1.1);
-        }
-
-        .book-title {
-            font-weight: 600;
-            color: var(--primary-dark);
-            font-size: 0.95rem;
-            line-height: 1.4;
-            transition: all 0.3s ease;
-        }
-
-        .book-item:hover .book-title {
-            color: var(--accent-color);
-        }
-
-        /* Resource Section */
-        .resource-section {
-            padding: 60px 40px;
-            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
-            position: relative;
-        }
-
-        .resource-section::before {
-            content: '💡';
-            position: absolute;
-            font-size: 12rem;
-            opacity: 0.03;
-            top: 30%;
-            right: 10%;
-            animation: floatBulb 5s ease-in-out infinite;
-        }
-
-        @keyframes floatBulb {
-            0%, 100% { transform: translateY(0) rotate(-10deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
-
-        .resource-title {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 1.8rem;
-            color: var(--primary-dark);
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-
-        .resource-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--accent-color);
-            border-radius: 2px;
-        }
-
-        .resource-grid {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        a.card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .article-card { 
-            display: flex; 
-            gap: 20px; 
-            background: var(--card-bg); 
-            border: 2px solid #e2e8f0; 
-            padding: 25px; 
-            border-radius: 16px; 
-            align-items: center; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .article-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-color);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-        }
-
-        a.card-link:active .article-card { transform: scale(0.98); }
-
-        .icon-box { 
-            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-            width: 60px; 
-            height: 60px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border-radius: 12px; 
-            font-size: 1.8rem; 
-            flex-shrink: 0; 
-            color: var(--accent-color);
-            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
-        }
-
-        .text-box h3 { 
-            margin: 0 0 6px 0; 
-            font-size: 1.1rem; 
-            color: var(--primary-dark); 
-            font-weight: 600;
-        }
-
-        .text-box p { 
-            margin: 0; 
-            color: var(--text-muted); 
-            font-size: 0.9rem; 
-            line-height: 1.4;
-        }
-
-        .article-card::after {
-            content: '➜';
-            margin-left: auto; 
-            font-size: 1.2rem;
-            color: #cbd5e1;
-            padding-left: 15px;
-            transition: transform 0.3s;
-        }
-
-        .article-card:hover::after {
-            transform: translateX(5px);
-            color: var(--accent-color);
-        }
-
-        .help-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-color), #2563EB);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.8rem;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
-            transition: all 0.3s;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            animation: pulse 2s infinite;
-            font-weight: bold;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4); }
-            50% { box-shadow: 0 4px 30px rgba(59, 130, 246, 0.6); }
-        }
-
-        .help-btn:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.6);
-        }
-
-        .help-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* Video Modal */
-        .video-modal-overlay {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(5px);
-            display: none; 
-            justify-content: center; 
-            align-items: center;
-            z-index: 9999; 
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .video-modal-content {
-            width: 80vw;
-            height: 80vh;
-            background: #000; 
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .video-modal-header {
-            position: absolute;
-            top: 20px; 
-            right: 20px;
-            z-index: 10;
-        }
-
-        .exit-popup-btn {
-            width: 50px; 
-            height: 50px;
-            background: #ef4444;
-            color: white; 
-            border: 2px solid #dc2626;
-            border-radius: 50%; 
-            cursor: pointer;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-size: 1.5rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
-        }
-
-        .exit-popup-btn:hover {
-            background: #dc2626;
-            border-color: #b91c1c;
-            transform: rotate(90deg) scale(1.15);
-            box-shadow: 0 6px 25px rgba(239, 68, 68, 0.6);
-        }
-
-        .exit-popup-btn:active {
-            transform: rotate(90deg) scale(1);
-        }
-
-        .video-container { 
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .video-container iframe, .video-container video { 
-            width: 100%;
-            height: 100%;
-            border: none;
-            object-fit: contain;
-        }
-
-        /* Resource Modal - Full Screen */
-        .resource-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; 
-            left: 0;
-            width: 100%; 
-            height: 100%;
-            background-color: white; 
-            z-index: 2000;
-            justify-content: center;
-            align-items: flex-start;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .resource-modal-container {
-            background: white;
-            width: 100%;
-            height: 100dvh;
-            border-radius: 0;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
-        }
-
-        .resource-modal-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .modal-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: var(--primary-dark);
-            display: flex; 
-            gap: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 70%;
-        }
-
-        .close-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: flex; 
-            align-items: center; 
-            gap: 6px;
-            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-            font-family: 'Prompt', sans-serif;
-        }
-        
-        .close-btn:active { transform: scale(0.95); }
-
-        .resource-modal-body {
-            flex: 1; 
-            width: 100%; 
-            background: #f1f5f9; 
-            position: relative;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .modal-loader {
-            position: absolute; 
-            top: 50%; 
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--text-muted); 
-            font-size: 0.9rem; 
-            z-index: 0;
-        }
-
-        .resource-modal-body iframe {
-            width: 100%; 
-            height: 100%;
-            border: none; 
-            display: block; 
-            position: relative; 
-            z-index: 1;
-        }
-
-        .resource-modal-overlay.active { 
-            display: flex; 
-            opacity: 1; 
-        }
-        
-        .resource-modal-overlay.active .resource-modal-container { 
-            transform: translateY(0); 
-        }
-
-        /* Tablet */
-        @media (max-width: 992px) {
-            .book-grid {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 600px;
-                gap: 35px;
-            }
-        }
-
-        /* Desktop Resource Modal */
-        @media (min-width: 768px) {
-            .resource-modal-overlay { 
-                align-items: center; 
-                background-color: rgba(15, 23, 42, 0.85);
-            }
-            
-            .resource-modal-container {
-                width: 100%;       
-                max-width: 100%;   
-                height: 100%;      
-                border-radius: 0;  
-                transform: none;   
-            }
-            
-            .resource-modal-overlay.active .resource-modal-container { 
-                transform: none; 
-            }
-        }
-
-        /* Mobile Optimization */
-        @media (max-width: 768px) {
-            header { 
-                flex-direction: column; 
-                text-align: center; 
-                gap: 15px; 
-                padding: 30px 20px;
-            }
-            
-            .brand h1 { font-size: 1.5rem; }
-            .brand p { font-size: 0.85rem; }
-            
-            .nav-wrapper {
-                padding: 12px 15px;
-            }
-            
-            .main-menu {
-                padding: 5px 0;
-                gap: 8px;
-            }
-            
-            .menu-btn {
-                font-size: 0.85rem;
-                padding: 6px 14px;
-            }
-            
-            .library-section, .resource-section {
-                padding: 40px 20px;
-            }
-            
-            .library-title, .resource-title {
-                font-size: 1.5rem;
-                margin-bottom: 30px;
-            }
-            
-            .book-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-                gap: 20px;
-            }
-            
-            .book-title {
-                font-size: 0.85rem;
-            }
-
-            .resource-grid {
-                padding: 0 10px;
-            }
-
-            .article-card {
-                padding: 20px;
-                gap: 15px;
-            }
-
-            .icon-box {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
-            }
-
-            .text-box h3 {
-                font-size: 1rem;
-            }
-
-            .text-box p {
-                font-size: 0.85rem;
-            }
-            
-            .help-btn { 
-                bottom: 20px; 
-                right: 20px; 
-                width: 50px; 
-                height: 50px;
-                font-size: 1.5rem;
-            }
-            
-            .exit-popup-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 1.3rem;
-            }
-            
-            .video-modal-header {
-                top: 15px;
-                right: 15px;
-            }
-            
-            #particles {
-                opacity: 0.5;
-            }
-        }
-
-        /* Touch Device Optimization */
-        @media (hover: none) and (pointer: coarse) {
-            .book-item:hover {
-                transform: none;
-            }
-            
-            .book-item:active {
-                transform: scale(0.98);
-                transition: transform 0.1s;
-            }
-            
-            .menu-btn:hover {
-                transform: none;
-                background: #f1f5f9;
-                color: var(--text-muted);
-            }
-
-            .menu-btn.active:hover {
-                background: var(--primary-dark);
-                color: white;
-            }
-            
-            .menu-btn:active {
-                transform: scale(0.95);
-            }
-            
-            .help-btn:hover {
-                transform: none;
-            }
-            
-            .help-btn:active {
-                transform: scale(0.9);
-            }
-            
-            .book-cover::before {
-                display: none;
-            }
-            
-            .menu-btn::before {
-                display: none;
-            }
-
-            .article-card:hover {
-                transform: none;
-            }
-
-            .article-card:active {
-                transform: scale(0.98);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .brand h1 { font-size: 1.3rem; }
-            .library-title, .resource-title { font-size: 1.3rem; }
-            .book-grid { 
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            .help-btn { width: 45px; height: 45px; font-size: 1.3rem; }
-        }
-            /* Footer Styles - Compact Version */
-  .site-footer {
-      margin-top: auto;
-      padding: 15px 10px; /* ลด Padding บน-ล่าง จาก 30px เหลือ 15px */
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-      text-align: center;
-  }
-
-  .footer-content p {
-      font-size: 0.75rem; /* ลดขนาดตัวอักษรลง (ประมาณ 12px) */
-      color: var(--text-muted);
-      margin-bottom: 5px; /* ลดระยะห่างด้านล่าง */
-  }
-
-  .footer-links {
-display: flex;
-    flex-direction: column; /* เปลี่ยนเป็นแนวตั้งเสมอ */
-    align-items: center;    /* จัดให้อยู่กึ่งกลาง */
-    gap: 8px;               /* ระยะห่างระหว่างข้อความ */
+:root {
+    --primary-blue: #0EA5E9;
+    --secondary-blue: #0284C7;
+    --light-blue: #E0F2FE;
+    --sky-blue: #7DD3FC;
+    --dark-blue: #0C4A6E;
+    --white: #FFFFFF;
+    --off-white: #F8FAFC;
+    --text-dark: #0F172A;
+    --text-gray: #64748B;
+    --gradient-1: linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%);
+    --gradient-2: linear-gradient(135deg, #7DD3FC 0%, #0EA5E9 100%);
+    --gradient-3: linear-gradient(135deg, #E0F2FE 0%, #FFFFFF 100%);
+    --shadow-sm: 0 2px 8px rgba(14, 165, 233, 0.1);
+    --shadow-md: 0 4px 16px rgba(14, 165, 233, 0.15);
+    --shadow-lg: 0 8px 32px rgba(14, 165, 233, 0.2);
 }
 
-.footer-links a {
-            text-decoration: none;
-            /* ปรับสีให้เหมือนกับส่วน <p> ซึ่งปกติจะใช้สีจาก --text-muted หรือสีเทาเข้ม */
-            color: var(--text-muted); 
-            /* หากไม่ได้ตั้งค่าตัวแปรไว้ สามารถใช้สี code นี้แทนได้ครับ: color: #64748b; */
-            
-            font-size: 0.8rem;
-            transition: opacity 0.3s;
-        }
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
 
-        .footer-links a:hover {
-            /* เมื่อเอาเมาส์วาง ให้สีเข้มขึ้นเล็กน้อยเพื่อให้รู้ว่ากดได้ */
-            color: #1e293b; 
-            text-decoration: underline;
-        }
+body { 
+    font-family: 'Sarabun', sans-serif; 
+    background: linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 50%, #FFFFFF 100%);
+    background-attachment: fixed;
+    color: var(--text-dark);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+}
 
-  @media (max-width: 768px) {
-      .footer-links {
-    display: flex; /* มั่นใจว่าเป็น Flexbox */
-        flex-direction: column; /* เปลี่ยนจากแนวนอนเป็นแนวตั้ง */
-        gap: 10px; /* ระยะห่างระหว่างบรรทัด */
-      }
-  }
+/* Animated Background Bubbles */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body::before {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+    top: -200px;
+    right: -200px;
+    animation: float1 20s ease-in-out infinite;
+}
+
+body::after {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(125, 211, 252, 0.15) 0%, transparent 70%);
+    bottom: -150px;
+    left: -150px;
+    animation: float2 15s ease-in-out infinite;
+}
+
+@keyframes float1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-50px, 50px) scale(1.1); }
+}
+
+@keyframes float2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, -50px) scale(1.15); }
+}
+
+body.no-scroll { overflow: hidden; position: fixed; width: 100%; }
+
+h1, h2, h3, .menu-btn, button { font-family: 'Prompt', sans-serif; }
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+    position: relative;
+    overflow-x: hidden; /* ตัดส่วนที่แลบออกมาทิ้ง */
+}
+
+#particles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Header */
+header {
+    width: 100%;
+    line-height: 0;
+    overflow: hidden;
+    background: var(--gradient-1);
+    position: relative;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3));
+}
+
+header img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 40vh; 
+    object-fit: cover;
+    filter: brightness(1.05) contrast(1.1);
+}
+
+/* แสดง text ถ้ายังไม่ได้ใส่รูป */
+.brand {
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.brand h1 { 
+    font-size: 1.8rem; 
+    color: white;
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+.brand span { 
+    color: #60A5FA;
+}
+
+.brand p { 
+    color: #cbd5e1; 
+    font-size: 0.9rem; 
+    margin-top: 5px; 
+}
+
+/* Navigation */
+.nav-wrapper {
+    position: sticky; 
+    top: 0; 
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.98), rgba(240, 249, 255, 0.98));
+    padding: 20px; 
+    border-bottom: 2px solid rgba(14, 165, 233, 0.1);
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-md);
+}
+
+.main-menu { 
+    display: flex; 
+    gap: 12px; 
+    overflow-x: auto; 
+    padding: 5px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+;
+}
+
+.main-menu::-webkit-scrollbar { display: none; }
+
+.menu-btn {
+    text-decoration: none; 
+    color: var(--text-gray); 
+    padding: 12px 24px;
+    border-radius: 30px; 
+    font-size: 0.95rem; 
+    font-weight: 500;
+    white-space: nowrap; 
+    background: white;
+    border: 2px solid rgba(14, 165, 233, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    user-select: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.menu-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--gradient-2);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+    z-index: -1;
+}
+
+.menu-btn:hover::before {
+    width: 300%;
+    height: 300%;
+}
+
+.menu-btn:hover { 
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-blue);
+}
+
+.menu-btn.active { 
+    background: var(--gradient-1);
+    color: white;
+    transform: scale(1.05);
+    border-color: var(--secondary-blue);
+    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.4);
+}
+
+/* Library Section */
+.library-section { 
+    padding: 60px 60px; 
+    text-align: center;
+    background: var(--gradient-3);
+    position: relative;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.library-section::before {
+    content: '📚';
+    position: absolute;
+    font-size: 20rem;
+    opacity: 0.04;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    animation: floatBook 8s ease-in-out infinite;
+    filter: blur(2px);
+}
+
+@keyframes floatBook {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
+    50% { transform: translate(-50%, -45%) rotate(-10deg) scale(1.05); }
+}
+
+.library-title { 
+    margin-bottom: 50px; 
+    font-size: 2.2rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 0.8s ease-out;
+    letter-spacing: -0.5px;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.library-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: var(--gradient-1);
+    border-radius: 2px;
+}
+
+.book-grid { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr);
+    gap: 35px; 
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.book-item { 
+    cursor: pointer; 
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    position: relative;
+}
+
+.book-item:hover { 
+    transform: translateY(-15px) scale(1.05);
+    z-index: 10;
+}
+
+.book-item:active {
+    transform: translateY(-12px) scale(1.03);
+}
+
+.book-cover {
+    width: 100%; 
+    aspect-ratio: 3/4; 
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow-md);
+    position: relative; 
+    overflow: hidden;
+    border-left: 6px solid rgba(14, 165, 233, 0.3);
+    transition: all 0.4s ease;
+}
+
+.book-item:hover .book-cover {
+    box-shadow: 0 20px 50px rgba(14, 165, 233, 0.25);
+    border-color: var(--primary-blue);
+}
+
+.book-cover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    transition: left 0.6s;
+}
+
+.book-item:hover .book-cover::before {
+    left: 100%;
+}
+
+.book-cover img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.book-item:hover .book-cover img {
+    transform: scale(1.1);
+}
+
+.book-title {
+    font-weight: 600;
+    color: var(--dark-blue);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+}
+
+.book-item:hover .book-title {
+    color: var(--primary-blue);
+}
+
+/* Resource Section */
+.resource-section {
+    padding: 60px 60px;
+    background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+    position: relative;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.resource-section::before {
+    content: '💡';
+    position: absolute;
+    font-size: 15rem;
+    opacity: 0.04;
+    top: 30%;
+    right: 10%;
+    animation: floatBulb 7s ease-in-out infinite;
+    filter: blur(2px);
+}
+
+@keyframes floatBulb {
+    0%, 100% { transform: translateY(0) rotate(-10deg) scale(1); }
+    50% { transform: translateY(-20px) rotate(10deg) scale(1.05); }
+}
+
+.resource-title {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 2rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.5px;
+}
+
+.resource-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: var(--gradient-1);
+    border-radius: 2px;
+}
+
+.resource-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+a.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    margin-bottom: 25px;
+    cursor: pointer;
+}
+
+.article-card { 
+    display: flex; 
+    gap: 20px; 
+    background: white;
+    border: 2px solid rgba(14, 165, 233, 0.1);
+    padding: 30px; 
+    border-radius: 24px; 
+    align-items: center; 
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.article-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-2);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-blue);
+    box-shadow: 0 20px 50px rgba(14, 165, 233, 0.25);
+}
+
+.article-card:hover::before {
+    opacity: 0.05;
+}
+
+a.card-link:active .article-card { 
+    transform: scale(0.98); 
+}
+
+.icon-box { 
+    background: linear-gradient(135deg, #E0F2FE 0%, #DBEAFE 100%);
+    width: 70px; 
+    height: 70px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 16px; 
+    font-size: 2rem; 
+    flex-shrink: 0; 
+    color: var(--primary-blue);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.text-box { 
+    position: relative;
+    z-index: 1;
+}
+
+.text-box h3 { 
+    margin: 0 0 8px 0; 
+    font-size: 1.2rem; 
+    color: var(--dark-blue); 
+    font-weight: 600;
+}
+
+.text-box p { 
+    margin: 0; 
+    color: var(--text-gray); 
+    font-size: 0.95rem; 
+    line-height: 1.6;
+}
+
+.article-card::after {
+    content: '➜';
+    margin-left: auto; 
+    font-size: 1.4rem;
+    color: #cbd5e1;
+    padding-left: 15px;
+    transition: all 0.4s;
+    position: relative;
+    z-index: 1;
+}
+
+.article-card:hover::after {
+    transform: translateX(8px);
+    color: var(--primary-blue);
+}
+
+/* Help Button */
+.help-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
+    background: var(--gradient-1);
+    color: white;
+    border: 3px solid white;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 6px 30px rgba(14, 165, 233, 0.5);
+    transition: all 0.4s;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    animation: pulse 2.5s infinite;
+    font-weight: bold;
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        box-shadow: 0 6px 30px rgba(14, 165, 233, 0.5);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 8px 40px rgba(14, 165, 233, 0.7);
+        transform: scale(1.05);
+    }
+}
+
+.help-btn:hover {
+    transform: scale(1.15) rotate(15deg);
+    box-shadow: 0 8px 40px rgba(14, 165, 233, 0.7);
+}
+
+.help-btn:active {
+    transform: scale(0.95);
+}
+
+/* Video Modal */
+.video-modal-overlay {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    display: none; 
+    justify-content: center; 
+    align-items: center;
+    z-index: 9999; 
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.video-modal-content {
+    width: 90vw;
+    max-width: 1200px;
+    height: 80vh;
+    background: #000; 
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.video-modal-header {
+    position: absolute;
+    top: 20px; 
+    right: 20px;
+    z-index: 10;
+}
+
+.exit-popup-btn {
+    width: 55px; 
+    height: 55px;
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    color: white; 
+    border: 3px solid white;
+    border-radius: 50%; 
+    cursor: pointer;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.exit-popup-btn:hover {
+    transform: rotate(90deg) scale(1.15);
+    box-shadow: 0 6px 25px rgba(239, 68, 68, 0.6);
+}
+
+.exit-popup-btn:active {
+    transform: rotate(90deg) scale(1);
+}
+
+.video-container { 
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-container iframe, .video-container video { 
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: contain;
+}
+
+/* Resource Modal */
+.resource-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background-color: white;
+    z-index: 2000;
+    justify-content: center;
+    align-items: flex-start;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.resource-modal-container {
+    background: white;
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.resource-modal-header {
+    padding: 20px;
+    border-bottom: 2px solid rgba(14, 165, 233, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #fff, #F0F9FF);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.modal-title {
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--dark-blue);
+    display: flex; 
+    gap: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
+}
+
+.close-btn {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex; 
+    align-items: center; 
+    gap: 6px;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    font-family: 'Prompt', sans-serif;
+    transition: all 0.3s;
+}
+
+.close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+}
+
+.close-btn:active { 
+    transform: scale(0.95); 
+}
+
+.resource-modal-body {
+    flex: 1; 
+    width: 100%; 
+    background: #f1f5f9; 
+    position: relative;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal-loader {
+    position: absolute; 
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-gray); 
+    font-size: 0.95rem; 
+    z-index: 0;
+}
+
+.resource-modal-body iframe {
+    width: 100%; 
+    height: 100%;
+    border: none; 
+    display: block; 
+    position: relative; 
+    z-index: 1;
+}
+
+.resource-modal-overlay.active { 
+    display: flex; 
+    opacity: 1; 
+}
+
+.resource-modal-overlay.active .resource-modal-container { 
+    transform: translateY(0); 
+}
+
+/* Audio Control Button */
+.audio-control-btn {
+    position: absolute;
+    top: 45px;
+    left: 1680px;
+    transform: translateY(-50%);
+    min-width: 120px;
+    height: 50px;
+    background: var(--gradient-1);
+    color: white;
+    border: 2px solid var(--secondary-blue);
+    border-radius: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+    z-index: 11;
+    padding: 0 20px;
+    font-family: 'Prompt', sans-serif;
+}
+
+.audio-control-btn:hover {
+    background: var(--gradient-2);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 6px 25px rgba(14, 165, 233, 0.6);
+}
+
+.audio-control-btn:active {
+    transform: translateY(-50%) scale(1);
+}
+
+.audio-control-btn.playing {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-color: #047857;
+    animation: audioPulse 1.5s infinite;
+}
+
+@keyframes audioPulse {
+    0%, 100% { 
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); 
+    }
+    50% { 
+        box-shadow: 0 4px 25px rgba(16, 185, 129, 0.6);
+    }
+}
+
+.audio-icon {
+    font-size: 1.3rem;
+}
+
+.audio-text {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Responsive */
+@media (min-width: 1600px) {
+    .library-section,
+    .resource-section {
+        max-width: 1800px;
+    }
+}
+
+@media (max-width: 992px) {
+    .book-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+}
+
+@media (min-width: 768px) {
+    .resource-modal-overlay { 
+        align-items: center; 
+        background-color: rgba(15, 23, 42, 0.85);
+    }
+    
+    .resource-modal-container {
+        width: 100%;       
+        max-width: 100%;   
+        height: 100%;      
+        border-radius: 0;  
+        transform: none;   
+    }
+    
+    .resource-modal-overlay.active .resource-modal-container { 
+        transform: none; 
+    }
+}
+
+@media (max-width: 768px) {
+    header { 
+        padding: 0;
+    }
+    
+    .brand {
+        padding: 30px 20px;
+    }
+    
+    .brand h1 { 
+        font-size: 1.5rem; 
+    }
+    
+    .brand p { 
+        font-size: 0.85rem; 
+    }
+    
+    .nav-wrapper {
+        padding: 15px;
+    }
+    
+    .main-menu {
+        gap: 10px;
+    }
+    
+    .menu-btn {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+    }
+    
+    .library-section, 
+    .resource-section {
+        padding: 40px 20px;
+    }
+    
+    .library-title, 
+    .resource-title {
+        font-size: 1.7rem;
+        margin-bottom: 30px;
+    }
+    
+    .book-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 20px;
+    }
+    
+    .book-title {
+        font-size: 0.9rem;
+    }
+
+    .resource-grid {
+        padding: 0;
+    }
+
+    .article-card {
+        padding: 25px;
+        gap: 15px;
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+
+    .text-box h3 {
+        font-size: 1.1rem;
+    }
+
+    .text-box p {
+        font-size: 0.85rem;
+    }
+    
+    .help-btn { 
+        bottom: 20px; 
+        right: 20px; 
+        width: 55px; 
+        height: 55px;
+        font-size: 1.6rem;
+    }
+    
+    .exit-popup-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+    
+    .video-modal-header {
+        top: 15px;
+        right: 15px;
+    }
+    
+    #particles {
+        opacity: 0.3;
+    }
+
+    .audio-control-btn {
+        min-width: 100px;
+        height: 45px;
+        font-size: 0.85rem;
+        top: 15px;
+        left: 15px;
+        transform: none;
+        padding: 0 15px;
+    }
+    
+    .audio-icon {
+        font-size: 1.1rem;
+    }
+    
+    .audio-text {
+        font-size: 0.8rem;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .book-item:hover {
+        transform: none;
+    }
+    
+    .book-item:active {
+        transform: scale(0.98);
+    }
+    
+    .menu-btn:hover {
+        transform: none;
+    }
+    
+    .menu-btn:active {
+        transform: scale(0.95);
+    }
+    
+  .help-btn:hover {
+        transform: none;
+    }
+    
+    .help-btn:active {
+        transform: scale(0.9);
+    }
+    
+    .article-card:hover {
+        transform: none;
+    }
+
+    .article-card:active {
+        transform: scale(0.98);
+    }
+
+    .book-cover::before {
+        display: none;
+    }
+
+    .menu-btn::before {
+        display: none;
+    }
+
+    .article-card::before {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand h1 { 
+        font-size: 1.3rem; 
+    }
+
+    .brand p {
+        font-size: 0.8rem;
+    }
+    
+    .library-title, 
+    .resource-title { 
+        font-size: 1.4rem; 
+    }
+    
+    .book-grid { 
+        gap: 15px;
+        padding: 10px;
+    }
+    
+    .article-card {
+        padding: 20px;
+        gap: 12px;
+    }
+
+    .icon-box {
+        width: 55px;
+        height: 55px;
+        font-size: 1.6rem;
+    }
+
+    .text-box h3 {
+        font-size: 1rem;
+    }
+
+    .text-box p {
+        font-size: 0.8rem;
+    }
+    
+    .help-btn { 
+        width: 50px; 
+        height: 50px; 
+        font-size: 1.4rem; 
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .exit-popup-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .video-modal-header {
+        top: 10px;
+        right: 10px;
+    }
+
+    .audio-control-btn {
+        min-width: 90px;
+        height: 40px;
+        font-size: 0.8rem;
+        top: 10px;
+        left: 10px;
+    }
+
+    .audio-icon {
+        font-size: 1rem;
+    }
+
+    .audio-text {
+        font-size: 0.75rem;
+    }
+}
+
+/* Small Mobile Landscape */
+@media (max-width: 480px) and (orientation: landscape) {
+    .library-section,
+    .resource-section {
+        padding: 30px 15px;
+    }
+
+    .book-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+}
+
+/* Very Small Mobile */
+@media (max-width: 360px) {
+    .brand h1 {
+        font-size: 1.2rem;
+    }
+
+    .library-title,
+    .resource-title {
+        font-size: 1.3rem;
+    }
+
+    .menu-btn {
+        font-size: 0.85rem;
+        padding: 8px 16px;
+    }
+
+    .book-grid {
+        gap: 12px;
+    }
+
+    .book-title {
+        font-size: 0.85rem;
+    }
+
+    .article-card {
+        padding: 18px;
+    }
+
+    .text-box h3 {
+        font-size: 0.95rem;
+    }
+
+    .text-box p {
+        font-size: 0.75rem;
+    }
+}
+    /* --- 8. Footer --- */
+.site-footer {
+    margin-top: auto;
+    padding: 25px 30px; /* เพิ่ม padding ซ้าย-ขวาให้พอดีกับ container */
+    background: linear-gradient(to right, var(--light-blue), var(--white));
+    border-top: 2px solid rgba(14, 165, 233, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 1000px; /* ปรับตัวเลขนี้ให้เท่ากับ Container ด้านบน */
+    margin: 0 auto;    /* จัดให้อยู่กึ่งกลาง */
+    padding: 20px;     /* เว้นระยะขอบในให้สวยงาม */
+    box-sizing: border-box; /* สำคัญ: เพื่อไม่ให้ padding ไปดันความกว้างเพิ่ม */
+}
+
+footer-content {
+    max-width: 900px; /* ต้องเท่ากับความกว้างของ .container */
+    margin: 0 auto;    /* จัดให้อยู่กึ่งกลางหน้าจอ */
+    padding: 30px 60px; /* ปรับให้เท่ากับ .content เพื่อให้ข้อความแนวตรงกัน */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-content p {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    gap: 8px;              
+}
+
+.footer-links a,
+.footer-links p {
+    text-decoration: none;
+    color: var(--text-gray); 
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--primary-blue);
+    transform: translateY(-2px);
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+    .site-footer {
+        text-align: left;
+        padding: 30px 50px;
+    }
+
+    .footer-links {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a::after {
+        content: "|";
+        margin-left: 20px;
+        color: rgba(14, 165, 233, 0.3);
+        pointer-events: none;
+    }
+    
+    .footer-links a:last-child::after {
+        content: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .library-section, 
+    .resource-section {
+        padding: 40px 15px; /* ลดระยะขอบซ้าย-ขวาเหลือแค่ 15px พอ */
+    }
+
+    .book-grid {
+        grid-template-columns: repeat(2, 1fr); /* มั่นใจว่ามีแค่ 2 คอลัมน์ */
+        gap: 15px;
+        width: 100%;
+        margin: 0;
+    }
+
+        
+    
+
+    .footer-content p {
+        font-size: 0.8rem;
+    }
+
+    .footer-links a,
+    .footer-links p {
+        font-size: 0.8rem;
+    }
+}
+
+/* --- 9. RESPONSIVE --- */
+@media (min-width: 768px) {
+    .modal-overlay { 
+        align-items: center; 
+        background-color: rgba(15, 23, 42, 0.85); 
+    }
+    
+    .modal-container {
+        width: 100%;       
+        max-width: 100%;   
+        height: 100%;      
+        border-radius: 0;  
+        transform: none;   
+    }
+    
+    .modal-overlay.active .modal-container { 
+        transform: none; 
+    }
+    
+    .nav-wrapper { 
+        padding: 20px; 
+    }
+    
+    .main-menu { 
+        justify-content: center; 
+    }
+
+    .site-footer {
+        text-align: left;
+        padding: 30px 50px;
+    }
+
+    .footer-links {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a::after {
+        content: "|";
+        margin-left: 20px;
+        color: rgba(14, 165, 233, 0.3);
+        pointer-events: none;
+    }
+    
+    .footer-links a:last-child::after {
+        content: none;
+    }
+}
     </style>
 </head>
 <body>
     <canvas id="particles"></canvas>
 
     <div class="container">
-        <header>
-            <div class="brand">
-                <h1>PDPA <span>Learning Center</span></h1>
-                <p>ศูนย์การเรียนรู้กฎหมายคุ้มครองข้อมูลส่วนบุคคล</p>
-            </div>
-        </header>
+<header>
+    <img src="สื่อ/banner2.png" alt="PDPA Learning Center">
+</header>
 
         <div class="nav-wrapper">
             <nav class="main-menu">
@@ -917,7 +1340,7 @@ display: flex;
         <div class="resource-section">
             <h2 class="resource-title">คลังความรู้เพิ่มเติม</h2>
             <div class="resource-grid">
-                <a href="https://drive.google.com/file/d/1rBiyZE-gJpaJpAoDI3wE6SYtDSwMXpv8/preview"  
+                <a href="https://drive.google.com/file/d/1rBiyZE-gJpaJpAoDI3wE6SYtDSwMXpv8/preview" 
                    class="card-link open-resource-modal" 
                    data-title="กฎหมาย PDPA ฉบับย่อ"
                    onclick="playSound('click')">
@@ -930,6 +1353,18 @@ display: flex;
                     </div>
                 </a>
                 
+                 <a href="https://www.youtube.com/embed/V8A7OqqY980?autoplay=1" 
+                   class="card-link open-resource-modal" 
+                   data-title="พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล"
+                   onclick="playSound('click')">
+                    <div class="article-card">
+                        <div class="icon-box">📚</div>
+                        <div class="text-box">
+                            <h3>พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล </h3>
+                            <p>วิดีโอแสรุปสาระสำคัญ</p>
+                        </div>
+                    </div>
+                </a>
                 <a href="https://www.youtube.com/embed/-1i2anSv5wQ?autoplay=1" 
                    class="card-link open-resource-modal" 
                    data-title="วิธีตั้งรหัสผ่านให้ปลอดภัย"
@@ -943,7 +1378,7 @@ display: flex;
                     </div>
                 </a>
 
-                <a href="https://www.youtube.com/embed/t8EJA37beWo?autoplay=1" 
+                <a href="https://www.youtube.com/embed/t8EJA37beWo?autoplay=1&" 
                    class="card-link open-resource-modal" 
                    data-title="การขอความยินยอม (Consent) "
                    onclick="playSound('click')">
@@ -971,15 +1406,16 @@ display: flex;
             </div>
         </div>
     </div>
-<footer class="site-footer">
+      <footer class="site-footer">
             <div class="footer-content">
                 <p>© 2026 PDPA Learning Center | เรียนรู้เพื่อความปลอดภัยของข้อมูล</p>
                 <div class="footer-links">
-                    <a href="pro.html">จัดทำโดย ธนดล, ณัฐพัฒน์, นภัสวรรณ  </a>
+                    <a href="pro.html">จัดทำโดย ธนดล, ณัฐพัฒน์, นภัสวรรณ</a>
                     <p>คณะครุศาสตร์ สาขาวิชาคอมพิวเตอร์ศึกษา มหาวิทยาลัยรายภัฏพระนครศรีอยุธยา</p>
                 </div>
             </div>
         </footer>
+    </div>
     <a href="contact.html" class="help-btn" title="ความช่วยเหลือ">?</a>
 
     <!-- Video Modal for Lessons -->
@@ -994,23 +1430,114 @@ display: flex;
         </div>
     </div>
 
-    <!-- Resource Modal for Documents -->
-    <div id="resourceModal" class="resource-modal-overlay">
-        <div class="resource-modal-container">
-            <div class="resource-modal-header">
-                <span class="modal-title" id="modalTitle">กำลังโหลด...</span>
-                <button class="close-btn" onclick="closeResourceModal()">
-                    ✕ ปิด
-                </button>
-            </div>
-            <div class="resource-modal-body">
-                <div class="modal-loader">กำลังโหลดข้อมูล...</div>
-                <iframe id="modalFrame" src="" allowfullscreen></iframe>
-            </div>
+<!-- Resource Modal for Documents -->
+<div id="resourceModal" class="resource-modal-overlay">
+    <div class="resource-modal-container">
+        <div class="resource-modal-header">
+<button class="audio-control-btn" id="audioControlBtn" onclick="toggleAudio()" title="เล่น/หยุดเสียง">
+    <span class="audio-icon">▶️</span>
+   
+</button>
+            <span class="modal-title" id="modalTitle">กำลังโหลด...</span>
+            <button class="close-btn" onclick="closeResourceModal()">
+                ✕ ปิด
+            </button>
+        </div>
+        <div class="resource-modal-body">
+            <div class="modal-loader">กำลังโหลดข้อมูล...</div>
+            <iframe id="modalFrame" src="" allowfullscreen></iframe>
         </div>
     </div>
+</div>
+
+<!-- Audio Element (ซ่อนไว้) -->
+<audio id="pdpaAudio" preload="auto">
+    <source src="สื่อ/ฝืนทำไมW.mp3" type="audio/mpeg">
+</audio>
 
     <script>
+// Audio Control
+const pdpaAudio = document.getElementById('pdpaAudio');
+const audioControlBtn = document.getElementById('audioControlBtn');
+let isPlaying = false;
+
+function toggleAudio() {
+    const icon = audioControlBtn.querySelector('.audio-icon');
+    
+    console.log('Audio source:', pdpaAudio.querySelector('source').src);
+    console.log('Current playing state:', isPlaying);
+    
+    if (isPlaying) {
+        pdpaAudio.pause();
+        icon.textContent = '▶️';
+        audioControlBtn.classList.remove('playing');
+        isPlaying = false;
+        console.log('Audio paused');
+    } else {
+        console.log('Attempting to play audio...');
+        
+        // ลองโหลดไฟล์ก่อน
+        pdpaAudio.load();
+        
+        pdpaAudio.play()
+            .then(() => {
+                console.log('Audio playing successfully!');
+                icon.textContent = '⏸️';
+                audioControlBtn.classList.add('playing');
+                isPlaying = true;
+            })
+            .catch(e => {
+                console.error('Audio play failed:', e);
+                console.error('Error details:', e.message);
+                alert('ไม่สามารถเล่นเสียงได้: ' + e.message + '\nกรุณาตรวจสอบว่าไฟล์ สื่อ/ฝืนทำไมW.mp3 มีอยู่จริง');
+            });
+    }
+    playSound('click');
+}
+
+// เมื่อเสียงเล่นจบให้รีเซ็ตปุ่ม
+pdpaAudio.addEventListener('ended', function() {
+    const icon = audioControlBtn.querySelector('.audio-icon');
+    icon.textContent = '▶️';
+    audioControlBtn.classList.remove('playing');
+    isPlaying = false;
+    console.log('Audio ended');
+});
+
+// เช็คว่าไฟล์โหลดได้หรือไม่
+pdpaAudio.addEventListener('loadeddata', function() {
+    console.log('Audio loaded successfully!');
+});
+
+pdpaAudio.addEventListener('error', function(e) {
+    console.error('Audio loading error:', e);
+    alert('ไม่สามารถโหลดไฟล์เสียงได้ กรุณาตรวจสอบ path: สื่อ/ฝืนทำไมW.mp3');
+});
+
+function toggleAudio() {
+    if (isPlaying) {
+        pdpaAudio.pause();
+        audioControlBtn.textContent = '▶️';
+        audioControlBtn.classList.remove('playing');
+        isPlaying = false;
+    } else {
+        pdpaAudio.play().catch(e => {
+            console.log('Audio play failed:', e);
+           
+        });
+        audioControlBtn.textContent = '⏸️';
+        audioControlBtn.classList.add('playing');
+        isPlaying = true;
+    }
+    playSound('click');
+}
+
+// เมื่อเสียงเล่นจบให้รีเซ็ตปุ่ม
+pdpaAudio.addEventListener('ended', function() {
+    audioControlBtn.textContent = '▶️';
+    audioControlBtn.classList.remove('playing');
+    isPlaying = false;
+});
         const sounds = {
             hover: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
             click: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'
@@ -1079,12 +1606,12 @@ display: flex;
         });
 
         // Lesson Data
-        const lessons = [
-    { id: 1, title: "ความหมายของ PDPA", coverImage: "สื่อ/1.png", type: "youtube", url: "https://www.youtube.com/embed/kudFsU9_IkI?autoplay=1" },
-    { id: 2, title: "PDPA ใกล้ตัว", coverImage: "สื่อ/2.png", type: "youtube", url: "https://www.youtube.com/embed/CjBcrCBblAw?autoplay=1" },
-    { id: 3, title: "ตัวอย่างในชีวิตประจำวัน", coverImage: "สื่อ/3.png", type: "youtube", url: "https://www.youtube.com/embed/lGQGsUgJG9I?autoplay=1" },
-    { id: 4, title: "โทษเมื่อกระทำความผิด", coverImage: "สื่อ/4.png", type: "youtube", url: "https://www.youtube.com/embed/MsUFzNpDrY0?autoplay=1" }
-        ];
+const lessons = [
+    { id: 1, title: "ความหมายของ PDPA", coverImage: "สื่อ/1.png", type: "video", url: "https://www.youtube.com/embed/kudFsU9_IkI?autoplay=1" },
+    { id: 2, title: "PDPA ใกล้ตัว", coverImage: "สื่อ/2.png", type: "video", url: "https://www.youtube.com/embed/CjBcrCBblAw?autoplay=1" },
+    { id: 3, title: "ตัวอย่างในชีวิตประจำวัน", coverImage: "สื่อ/3.png", type: "video", url: "https://www.youtube.com/embed/lGQGsUgJG9I?autoplay=1" },
+    { id: 4, title: "โทษเมื่อกระทำความผิด", coverImage: "สื่อ/4.png", type: "video", url: "https://www.youtube.com/embed/MsUFzNpDrY0?autoplay=1" }
+];
 
         function renderBooks() {
             const grid = document.getElementById('bookGrid');
@@ -1102,16 +1629,23 @@ document.querySelectorAll('.open-resource-modal').forEach(link => {
         e.preventDefault();
         const url = this.getAttribute('href');
         const title = this.getAttribute('data-title');
-        
         modalTitle.textContent = title;
         
-        // ใส่คุณสมบัติ allow autoplay เพื่อให้วิดีโอเล่นเองได้
+        // --- ส่วนที่แก้ไข: เช็คชื่อหัวข้อเพื่อแสดง/ซ่อนปุ่มเสียง ---
+        if (title === "กฎหมาย PDPA ฉบับย่อ") {
+            audioControlBtn.style.display = "flex"; // แสดงปุ่มถ้าเป็น PDPA ฉบับย่อ
+        } else {
+            audioControlBtn.style.display = "none"; // ซ่อนถ้าเป็นหัวข้ออื่น (เช่น วิดีโอ หรือ ข่าวปลอม)
+        }
+        // --------------------------------------------------
+
         modalFrame.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
         modalFrame.src = url;
         
         resourceModal.classList.add('active');
         document.body.classList.add('no-scroll');
     });
+
 });
         }
 
@@ -1119,23 +1653,27 @@ document.querySelectorAll('.open-resource-modal').forEach(link => {
         const videoModal = document.getElementById('videoModal');
         const videoContainer = document.getElementById('videoContainer');
 
-        function openLesson(id) {
-            playSound('click');
-            const data = lessons.find(l => l.id === id);
-            videoContainer.innerHTML = "";
+function openLesson(id) {
+    playSound('click');
+    const data = lessons.find(l => l.id === id);
+    videoContainer.innerHTML = "";
 
-            if (data.type === 'youtube') {
-                const videoId = getYoutubeId(data.url);
-videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
-    allow="autoplay; encrypted-media; picture-in-picture" 
-    allowfullscreen></iframe>`;
-            } else if (data.type === 'video') {
-                videoContainer.innerHTML = `<video controls autoplay><source src="${data.url}" type="video/mp4"></video>`;
-            }
+    if (data.type === 'youtube') {
+        const videoId = getYoutubeId(data.url);
+        videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+            allow="autoplay; encrypted-media; picture-in-picture" 
+            allowfullscreen></iframe>`;
+    } else if (data.type === 'video') {
+        // --- แก้ไขจุดนี้ ---
+        // เปลี่ยนจาก <video> เป็น <iframe> เพื่อรองรับลิงก์ Google Drive Preview
+        videoContainer.innerHTML = `<iframe src="${data.url}" 
+            allow="autoplay; encrypted-media; picture-in-picture" 
+            allowfullscreen></iframe>`;
+    }
 
-            videoModal.style.display = "flex";
-            document.body.classList.add('no-scroll');
-        }
+    videoModal.style.display = "flex";
+    document.body.classList.add('no-scroll');
+}
 
         function closeVideoModal() {
             videoModal.style.display = "none";
@@ -1168,6 +1706,16 @@ videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId
             playSound('click');
             resourceModal.classList.remove('active');
             document.body.classList.remove('no-scroll');
+    if (isPlaying) {
+        const icon = audioControlBtn.querySelector('.audio-icon');
+        const text = audioControlBtn.querySelector('.audio-text');
+        pdpaAudio.pause();
+        pdpaAudio.currentTime = 0;
+        icon.textContent = '▶️';
+        text.textContent = 'ฟังสรุป';
+        audioControlBtn.classList.remove('playing');
+        isPlaying = false;
+    }
             setTimeout(() => { modalFrame.src = ''; }, 300);
         }
 
@@ -1210,39 +1758,6 @@ videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId
         }, false);
 
         renderBooks();
-        function openLesson(id) {
-    playSound('click');
-    const data = lessons.find(l => l.id === id);
-    videoContainer.innerHTML = "";
-
-    if (data.type === 'youtube') {
-        // ใช้ลิงก์จาก data.url ได้เลยเพราะเป็นรูปแบบ embed อยู่แล้ว
-        // เพิ่ม ?autoplay=1 เพื่อให้เล่นอัตโนมัติ
-        const videoUrl = data.url.includes('?') ? `${data.url}&autoplay=1` : `${data.url}?autoplay=1`;
-        
-        videoContainer.innerHTML = `
-            <iframe 
-                src="${videoUrl}" 
-                allow="autoplay; encrypted-media; picture-in-picture" 
-                allowfullscreen>
-            </iframe>`;
-    } else if (data.type === 'video') {
-        // กรณีถ้ามีไฟล์ .mp4 ในอนาคต
-        videoContainer.innerHTML = `<video controls autoplay><source src="${data.url}" type="video/mp4"></video>`;
-    }
-
-    videoModal.style.display = "flex";
-    document.body.classList.add('no-scroll');
-}
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
