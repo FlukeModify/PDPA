@@ -7,12 +7,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-dark: #0F172A;
-            --accent-color: #3B82F6;
-            --text-muted: #64748B;
-            --bg-color: #F8FAFC;
+            --primary-blue: #0EA5E9;
+            --secondary-blue: #0284C7;
+            --light-blue: #E0F2FE;
+            --sky-blue: #7DD3FC;
+            --dark-blue: #0C4A6E;
+            --white: #FFFFFF;
+            --off-white: #F8FAFC;
+            --text-dark: #0F172A;
+            --text-gray: #64748B;
             --success: #10B981;
-            --warning: #F59E0B;
+            --gradient-1: linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%);
+            --gradient-2: linear-gradient(135deg, #7DD3FC 0%, #0EA5E9 100%);
+            --gradient-3: linear-gradient(135deg, #E0F2FE 0%, #FFFFFF 100%);
+            --shadow-sm: 0 2px 8px rgba(14, 165, 233, 0.1);
+            --shadow-md: 0 4px 16px rgba(14, 165, 233, 0.15);
+            --shadow-lg: 0 8px 32px rgba(14, 165, 233, 0.2);
         }
 
         * { 
@@ -25,116 +35,137 @@
         
         body { 
             font-family: 'Sarabun', sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--primary-dark);
+            background: linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 50%, #FFFFFF 100%);
+            background-attachment: fixed;
+            color: var(--text-dark);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            position: relative;
+        }
+
+        /* Animated Background Bubbles */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::before {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation: float1 20s ease-in-out infinite;
+        }
+
+        body::after {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(125, 211, 252, 0.15) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation: float2 15s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-50px, 50px) scale(1.1); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, -50px) scale(1.15); }
         }
         
         h1, h2, h3, .menu-btn { font-family: 'Prompt', sans-serif; }
 
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    background: #fff;
-    min-height: 100vh; /* บรรทัดนี้สำคัญมาก */
-    display: flex; /* และบรรทัดนี้ */
-    flex-direction: column; /* และบรรทัดนี้ */
-    /* ... ส่วนอื่นคงเดิม ... */
-}
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 60px rgba(14, 165, 233, 0.1);
+            position: relative;
+            z-index: 1;
+        }
 
-        /* ปรับปรุงส่วน Header ให้เป็นรูปภาพ */
-/* --- Header รูปภาพแบบเต็มจอ (Full Width) --- */
+        /* Header with Image */
         header {
             width: 100%;
             line-height: 0;
             overflow: hidden;
-            background-color: #fff;
+            background: var(--gradient-1);
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3));
         }
 
         header img {
             width: 100%;
             height: auto;
             display: block;
-            /* ปรับความสูงให้เหมาะสมกับมือถือ ไม่ให้ยาวเกินไป */
             max-height: 40vh; 
             object-fit: cover;
-        }
-   
-        @keyframes headerPulse {
-            0%, 100% { transform: translate(-25%, -25%) scale(1); }
-            50% { transform: translate(-25%, -25%) scale(1.1); }
+            filter: brightness(1.05) contrast(1.1);
         }
 
-        .brand { position: relative; z-index: 2; }
-        .brand h1 { 
-            font-size: 1.8rem; 
-            color: white;
-            font-weight: 700;
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            animation: titleGlow 2s ease-in-out infinite;
-        }
-        
-        @keyframes titleGlow {
-            0%, 100% { text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-            50% { text-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
-        }
-
-        .brand span { 
-            color: #60A5FA;
-            display: inline-block;
-            animation: bounce 2s ease-in-out infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .brand p { color: #cbd5e1; font-size: 0.9rem; margin-top: 5px; }
-
-        /* Navigation - เลื่อนได้บนมือถือ */
+        /* Modern Navigation */
         .nav-wrapper {
             position: sticky; 
             top: 0; 
-            background: rgba(255,255,255,0.95);
-            padding: 15px 20px; 
-            border-bottom: 1px solid #eee; 
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.98), rgba(240, 249, 255, 0.98));
+            padding: 20px; 
+            border-bottom: 2px solid rgba(14, 165, 233, 0.1);
             z-index: 100;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-md);
         }
         
         .main-menu { 
             display: flex; 
-            gap: 10px; 
+            gap: 12px; 
             overflow-x: auto; 
-            padding-bottom: 5px;
+            padding: 5px;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
-            scroll-snap-type: x proximity;
-            scroll-behavior: smooth;
+            content: center;
         }
         
-        .main-menu::-webkit-scrollbar { 
-            display: none; 
-        }
+        .main-menu::-webkit-scrollbar { display: none; }
         
         .menu-btn {
             text-decoration: none; 
-            color: var(--text-muted); 
-            padding: 8px 16px;
-            border-radius: 20px; 
-            font-size: 0.9rem; 
+            color: var(--text-gray); 
+            padding: 12px 24px;
+            border-radius: 30px; 
+            font-size: 0.95rem; 
+            font-weight: 500;
             white-space: nowrap; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #f1f5f9;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 2px solid rgba(14, 165, 233, 0.1);
             position: relative;
             overflow: hidden;
             flex-shrink: 0;
             scroll-snap-align: start;
             user-select: none;
+            box-shadow: var(--shadow-sm);
         }
 
         .menu-btn::before {
@@ -145,32 +176,37 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(59, 130, 246, 0.2);
+            background: var(--gradient-2);
             transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
+            transition: width 0.5s ease, height 0.5s ease;
+            z-index: -1;
         }
 
         .menu-btn:hover::before {
-            width: 100%;
-            height: 100%;
+            width: 300%;
+            height: 300%;
         }
 
-        .menu-btn:hover, .menu-btn.active { 
-            background: var(--primary-dark); 
+        .menu-btn:hover { 
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-blue);
         }
 
-        .menu-btn.active {
-            transform: translateY(0);
+        .menu-btn.active { 
+            background: var(--gradient-1);
+            color: white;
+            transform: scale(1.05);
+            border-color: var(--secondary-blue);
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.4);
         }
 
-        /* Welcome Section */
+        /* Welcome Section - Enhanced */
         .welcome-section {
-            padding: 50px 30px;
+            padding: 60px 30px;
             text-align: center;
-            background: linear-gradient(135deg, #EFF6FF 0%, #FFFFFF 100%);
+            background: var(--gradient-3);
             position: relative;
             overflow: hidden;
         }
@@ -178,55 +214,64 @@
         .welcome-section::before {
             content: '🛡️';
             position: absolute;
-            font-size: 15rem;
-            opacity: 0.03;
+            font-size: 20rem;
+            opacity: 0.04;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-15deg);
-            animation: floatShield 6s ease-in-out infinite;
+            animation: floatShield 8s ease-in-out infinite;
+            filter: blur(2px);
         }
 
         @keyframes floatShield {
-            0%, 100% { transform: translate(-50%, -50%) rotate(-15deg); }
-            50% { transform: translate(-50%, -45%) rotate(-10deg); }
+            0%, 100% { transform: translate(-50%, -50%) rotate(-15deg) scale(1); }
+            50% { transform: translate(-50%, -45%) rotate(-10deg) scale(1.05); }
         }
 
         .welcome-section h2 { 
-            font-size: 2rem; 
-            margin-bottom: 15px;
+            font-size: 2.2rem; 
+            margin-bottom: 20px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             position: relative;
             z-index: 1;
             animation: fadeInUp 0.8s ease-out;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .welcome-section p { 
-            max-width: 600px; 
+            max-width: 650px; 
             margin: 0 auto; 
-            color: var(--text-muted);
+            color: var(--text-gray);
+            font-size: 1.05rem;
+            line-height: 1.8;
             position: relative;
             z-index: 1;
             animation: fadeInUp 0.8s ease-out 0.2s backwards;
         }
 
-        /* Dashboard Grid */
+        /* Dashboard Grid - Modern Cards */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 30px;
+            gap: 25px;
+            padding: 40px 30px;
         }
 
         .card {
-            background: white; 
-            border: 2px solid #e2e8f0; 
-            border-radius: 15px;
-            padding: 25px; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 2px solid rgba(14, 165, 233, 0.1);
+            border-radius: 24px;
+            padding: 30px; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none; 
             color: inherit; 
             display: flex; 
@@ -234,27 +279,52 @@
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            box-shadow: var(--shadow-sm);
         }
 
         .card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-            transition: left 0.5s;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
         }
 
         .card:hover::before {
-            left: 100%;
+            opacity: 0.1;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+            animation: shine 1.5s ease;
+        }
+
+        @keyframes shine {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
         }
 
         .card:hover { 
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            border-color: var(--accent-color);
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(14, 165, 233, 0.25);
+            border-color: var(--primary-blue);
         }
 
         .card:active {
@@ -262,152 +332,216 @@
         }
         
         .card-icon { 
-            font-size: 3rem; 
-            margin-bottom: 15px;
-            animation: bounce 2s ease-in-out infinite;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-        }
-
-        .card h3 { 
-            font-size: 1.2rem; 
-            margin-bottom: 8px; 
-            color: var(--primary-dark);
+            font-size: 3.5rem; 
+            margin-bottom: 20px;
+            animation: bounce 3s ease-in-out infinite;
+            filter: drop-shadow(0 4px 12px rgba(14, 165, 233, 0.3));
             position: relative;
             z-index: 1;
         }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .card h3 { 
+            font-size: 1.3rem; 
+            margin-bottom: 12px; 
+            color: var(--dark-blue);
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+        }
         
         .card p { 
-            font-size: 0.9rem; 
-            color: var(--text-muted); 
-            line-height: 1.5;
+            font-size: 0.95rem; 
+            color: var(--text-gray); 
+            line-height: 1.6;
             position: relative;
             z-index: 1;
         }
         
         .card-arrow { 
             margin-top: auto; 
-            padding-top: 15px; 
-            color: var(--accent-color); 
-            font-weight: bold; 
-            font-size: 0.9rem;
+            padding-top: 20px; 
+            color: var(--primary-blue); 
+            font-weight: 600; 
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 5px;
-            transition: gap 0.3s;
+            gap: 8px;
+            transition: all 0.4s;
             position: relative;
             z-index: 1;
         }
 
         .card:hover .card-arrow {
-            gap: 10px;
+            gap: 15px;
+            color: var(--secondary-blue);
         }
 
-        /* Floating Action Button */
+        /* Floating Action Button - Enhanced */
         .fab {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-color), #2563EB);
+            width: 65px;
+            height: 65px;
+            background: var(--gradient-1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            font-size: 1.6rem;
+            box-shadow: 0 6px 30px rgba(14, 165, 233, 0.5);
             cursor: pointer;
             z-index: 1000;
-            transition: all 0.3s;
-            animation: pulse 2s infinite;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: pulse 2.5s infinite;
+            border: 3px solid white;
         }
 
         @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4); }
-            50% { box-shadow: 0 4px 30px rgba(59, 130, 246, 0.6); }
+            0%, 100% { 
+                box-shadow: 0 6px 30px rgba(14, 165, 233, 0.5);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 8px 40px rgba(14, 165, 233, 0.7);
+                transform: scale(1.05);
+            }
         }
 
         .fab:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.6);
+            transform: scale(1.15) rotate(90deg);
+            box-shadow: 0 8px 40px rgba(14, 165, 233, 0.7);
         }
 
         .fab:active {
             transform: scale(0.95);
         }
 
+        /* Footer - Modern Design */
+        .site-footer {
+            margin-top: auto;
+            padding: 25px 20px;
+            background: linear-gradient(to right, var(--light-blue), var(--white));
+            border-top: 2px solid rgba(14, 165, 233, 0.1);
+            text-align: center;
+            width: 100%;
+    max-width: 1000px; /* ปรับตัวเลขนี้ให้เท่ากับ Container ด้านบน */
+    margin: 0 auto;    /* จัดให้อยู่กึ่งกลาง */
+    padding: 20px;     /* เว้นระยะขอบในให้สวยงาม */
+    box-sizing: border-box; /* สำคัญ: เพื่อไม่ให้ padding ไปดันความกว้างเพิ่ม */
+        }
+
+        .footer-content p {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-bottom: 10px;
+            font-weight: 500;
+            
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;    
+            gap: 8px;              
+        }
+
+        .footer-links a,
+        .footer-links p {
+            text-decoration: none;
+            color: var(--text-gray); 
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
         /* Mobile Optimization */
         @media (max-width: 768px) {
             header { 
-                flex-direction: column; 
-                text-align: center; 
-                gap: 15px; 
-                padding: 30px 20px;
+                padding: 0;
             }
             
-            .brand h1 { font-size: 1.5rem; }
-            .brand p { font-size: 0.85rem; }
-            
             .nav-wrapper {
-                padding: 12px 15px;
+                padding: 15px;
             }
             
             .main-menu {
-                padding: 5px 0;
-                gap: 8px;
+                gap: 10px;
             }
             
             .menu-btn {
-                font-size: 0.85rem;
-                padding: 6px 14px;
+                font-size: 0.9rem;
+                padding: 10px 20px;
             }
             
             .welcome-section {
-                padding: 30px 20px;
+                padding: 40px 20px;
             }
             
             .welcome-section h2 {
-                font-size: 1.5rem;
+                font-size: 1.7rem;
             }
             
             .welcome-section p {
-                font-size: 0.9rem;
+                font-size: 0.95rem;
             }
             
             .dashboard-grid { 
                 grid-template-columns: 1fr; 
-                padding: 20px;
-                gap: 15px;
+                padding: 25px 20px;
+                gap: 20px;
             }
             
             .card {
-                padding: 20px;
+                padding: 25px;
             }
             
             .card-icon {
-                font-size: 2.5rem;
-            }
-            
-            .card h3 {
-                font-size: 1.1rem;
-            }
-            
-            .card p {
-                font-size: 0.85rem;
+                font-size: 3rem;
             }
             
             .fab { 
                 bottom: 20px; 
                 right: 20px; 
-                width: 50px; 
-                height: 50px;
-                font-size: 1.2rem;
+                width: 55px; 
+                height: 55px;
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Desktop Enhancement */
+        @media (min-width: 768px) {
+            .site-footer {
+                text-align: left;
+                padding: 30px 50px;
+            }
+
+            .footer-links {
+                flex-direction: row;
+                justify-content: flex-start;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .footer-links a::after {
+                content: "|";
+                margin-left: 20px;
+                color: rgba(14, 165, 233, 0.3);
+                pointer-events: none;
             }
             
-            /* ปรับ Particles สำหรับมือถือ */
-            #particles {
-                opacity: 0.5;
+            .footer-links a:last-child::after {
+                content: none;
             }
         }
 
@@ -424,13 +558,6 @@
             
             .menu-btn:hover {
                 transform: none;
-                background: #f1f5f9;
-                color: var(--text-muted);
-            }
-
-            .menu-btn.active:hover {
-                background: var(--primary-dark);
-                color: white;
             }
             
             .menu-btn:active {
@@ -444,93 +571,13 @@
             .fab:active {
                 transform: scale(0.9);
             }
-            
-            /* ปิด hover effects บนมือถือ */
-            .card::before {
-                display: none;
-            }
-            
-            .menu-btn::before {
-                display: none;
-            }
         }
-
-        /* Small Mobile */
-        @media (max-width: 400px) {
-            .brand h1 { font-size: 1.3rem; }
-            .welcome-section h2 { font-size: 1.3rem; }
-            .dashboard-grid { padding: 15px; }
-            .card { padding: 15px; }
-            .card-icon { font-size: 2rem; }
-            .fab { width: 45px; height: 45px; font-size: 1.1rem; }
-        }
-     /* Footer Styles - Compact Version */
-  .site-footer {
-      margin-top: auto;
-      padding: 15px 10px;
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-      text-align: center; /* ค่าเริ่มต้นสำหรับมือถือ */
-  }
-
-  .footer-content p {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-  }
-
-  /* ส่วนที่ปรับปรุง: ค่าเริ่มต้นสำหรับมือถือ (Mobile First) */
-  .footer-links {
-      display: flex;
-      flex-direction: column; /* มือถือ: เรียงแนวตั้ง */
-      align-items: center;    
-      gap: 8px;              
-  }
-
-  .footer-links a {
-      text-decoration: none;
-      color: var(--text-muted); 
-      font-size: 0.8rem;
-      transition: opacity 0.3s;
-  }
-
-  .footer-links a:hover {
-      color: #1e293b; 
-      text-decoration: underline;
-  }
-
-  /* --- ส่วนที่เพิ่มเข้ามาสำหรับหน้าจอคอมพิวเตอร์ (Desktop) --- */
-  @media (min-width: 768px) {
-      .site-footer {
-          text-align: left; /* จัดข้อความชิดซ้าย */
-          padding: 20px 50px; /* เพิ่มพื้นที่ด้านข้างในคอม */
-      }
-
-      .footer-links {
-          flex-direction: row; /* เปลี่ยนเป็นแนวนอน */
-          justify-content: flex-start; /* จัดให้อยู่ทางซ้าย */
-          gap: 15px; /* เพิ่มระยะห่างระหว่างรายการ */
-          flex-wrap: wrap; /* ป้องกันการล้นหากข้อความยาวเกินไป */
-      }
-
-      /* เพิ่มเส้นแบ่งเล็กๆ ระหว่างชื่อผู้จัดทำกับชื่อคณะ (Optional) */
-      .footer-links a::after {
-          content: "|";
-          margin-left: 15px;
-          color: #e2e8f0;
-          pointer-events: none;
-      }
-      
-      .footer-links p {
-          margin-bottom: 0; /* เอา margin ออกเพื่อให้ขนานกับลิงก์ */
-      }
-  }
     </style>
 </head>
 <body>
-<div class="container">
+    <div class="container">
         <header>
-            <img src="สื่อ/banner.jpeg" alt="PDPA Learning Center">
+            <img src="สื่อ/benner.jpg" alt="PDPA Learning Center">
         </header>
 
         <div class="nav-wrapper">
@@ -539,7 +586,6 @@
                 <a href="lesson.html" class="menu-btn">📚 บทเรียน</a>
                 <a href="game.html" class="menu-btn">🎮 มินิเกม</a>
                 <a href="quiz.html" class="menu-btn">📝 ประเมิน</a>
-              
                 <a href="contact.html" class="menu-btn">💬 สอบถาม</a>
             </nav>
         </div>
@@ -550,52 +596,51 @@
         </section>
 
         <section class="dashboard-grid">
-            <a href="lesson.html" class="card" data-sound="card">
+            <a href="lesson.html" class="card">
                 <div class="card-icon">📚</div>
                 <h3>เริ่มบทเรียน</h3>
                 <p>เรียนรู้พื้นฐาน PDPA ตั้งแต่ต้นจนจบ เข้าใจง่ายด้วยภาพประกอบ</p>
                 <div class="card-arrow">ไปที่บทเรียน →</div>
             </a>
 
-            <a href="quiz.html" class="card" data-sound="card">
+            <a href="quiz.html" class="card">
                 <div class="card-icon">📝</div>
                 <h3>แบบทดสอบ</h3>
                 <p>วัดระดับความรู้ของคุณก่อนเรียนและหลังเรียนจบ</p>
                 <div class="card-arrow">ทำแบบทดสอบ →</div>
             </a>
             
-            <a href="game.html" class="card" data-sound="card">
+            <a href="game.html" class="card">
                 <div class="card-icon">🎮</div>
                 <h3>เล่นมินิเกม</h3>
-                <p>สวมบทบาท DPO แก้ไขสถานการณ์ข้อมูลรั่วไหลในองค์กร (แนะนำ!)</p>
+                <p>สนุกไปกับการเรียนรู้ผ่านเกมตอบคำถาม พิชิตด่านต่างๆ </p>
                 <div class="card-arrow">เริ่มเล่นเกม →</div>
             </a>
 
-            <a href="contact.html" class="card" data-sound="card">
+            <a href="contact.html" class="card">
                 <div class="card-icon">🤖</div>
                 <h3>คุยกับบอท</h3>
                 <p>มีข้อสงสัย? สอบถามน้อง PDPA Bot ได้ตลอด 24 ชม.</p>
                 <div class="card-arrow">เริ่มสนทนา →</div>
             </a>
         </section>
+
+        <footer class="site-footer">
+            <div class="footer-content">
+                <p>© 2026 PDPA Learning Center | เรียนรู้เพื่อความปลอดภัยของข้อมูล</p>
+                <div class="footer-links">
+                    <a href="pro.html">จัดทำโดย ธนดล, ณัฐพัฒน์, นภัสวรรณ</a>
+                    <p>คณะครุศาสตร์ สาขาวิชาคอมพิวเตอร์ศึกษา มหาวิทยาลัยรายภัฏพระนครศรีอยุธยา</p>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <div class="fab" id="fab" title="ความช่วยเหลือ">
         ❓
     </div>
-<footer class="site-footer">
-            <div class="footer-content">
-                <p>© 2026 PDPA Learning Center | เรียนรู้เพื่อความปลอดภัยของข้อมูล</p>
-                <div class="footer-links">
-                    <a href="pro.html">จัดทำโดย ธนดล, ณัฐพัฒน์, นภัสวรรณ  </a>
-                    <p>คณะครุศาสตร์ สาขาวิชาคอมพิวเตอร์ศึกษา มหาวิทยาลัยรายภัฏพระนครศรีอยุธยา</p>
 
-                </div>
-            </div>
-        </footer>
-    </div>
     <script>
-        // Sound System
         const sounds = {
             hover: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
             click: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3',
@@ -608,117 +653,47 @@
             audio.play().catch(e => console.log('Audio play failed:', e));
         }
 
-        // Particles Animation
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const particles = [];
-        const isMobile = window.innerWidth <= 768;
-        const particleCount = isMobile ? 20 : 50;
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.5 + 0.2;
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-            }
-
-            draw() {
-                ctx.fillStyle = `rgba(59, 130, 246, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-
-        animateParticles();
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-        // Interactive Cards
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             card.addEventListener('touchstart', () => playSound('hover'), { passive: true });
             card.addEventListener('mouseenter', () => playSound('hover'));
             
             card.addEventListener('click', (e) => {
-                // ปล่อยให้ลิงก์ทำงานได้ปกติ แต่เล่นเสียงก่อน
                 playSound('click');
-                // ไม่ต้อง e.preventDefault() ตรงนี้เพื่อให้ href="..." ทำงาน
-                // แต่ถ้าอยากทำ delay เล็กน้อยเพื่อให้เสียงเล่นทัน:
                 const href = card.getAttribute('href');
                 if(href && href !== '#') {
                     e.preventDefault();
                     card.style.transform = 'scale(0.95)';
                     setTimeout(() => {
                         window.location.href = href;
-                    }, 0);
+                    }, 200);
                 }
             });
         });
 
-        // Menu Buttons - แก้ไขให้กดแล้วไปหน้าอื่นได้
         const menuBtns = document.querySelectorAll('.menu-btn');
         menuBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // 1. เล่นเสียง
                 playSound('click');
-                
-                // 2. จัดการ Visual active state (สำหรับความสวยงามชั่วคราวก่อนเปลี่ยนหน้า)
                 menuBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
 
-                // 3. จัดการการเปลี่ยนหน้า
                 const href = btn.getAttribute('href');
-                
-                // ถ้ามีลิงก์และไม่ใช่ #
                 if (href && href !== '#') {
-                    e.preventDefault(); // หยุดการไปทันที เพื่อรอเวลาสักนิด
+                    e.preventDefault();
                     setTimeout(() => {
-                        window.location.href = href; // ไปหน้าใหม่
-                    }, 0); // หน่วงเวลา 0.2 วินาที
+                        window.location.href = href;
+                    }, 200);
                 }
-                // ถ้าเป็น # หรือไม่มี href ก็ปล่อยไปตามปกติ (ซึ่งจะอยู่หน้าเดิม)
             });
         });
 
-        // FAB -> Contact
         const fab = document.getElementById('fab');
         fab.addEventListener('click', () => {
             playSound('success');
             window.location.href = 'contact.html'; 
         });
         
-        // Prevent zoom on double tap (iOS)
         let lastTouchEnd = 0;
         document.addEventListener('touchend', (event) => {
             const now = Date.now();
@@ -728,7 +703,6 @@
             lastTouchEnd = now;
         }, false);
 
-        // Smooth scroll for menu on mobile
         const mainMenu = document.getElementById('mainMenu');
         let isScrolling = false;
         let startX;
@@ -753,6 +727,3 @@
     </script>
 </body>
 </html>
-
-
-
