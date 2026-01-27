@@ -501,7 +501,31 @@ footer-content {
     align-items: center;    
     gap: 8px;              
 }
+/* เลือกเฉพาะลิงก์ชื่อผู้จัดทำ */
+.footer-links a {
+    display: inline-block; /* สำคัญเพื่อให้ขยับได้ */
+    animation: smoothBounce 2s ease-in-out infinite;
+    color: var(--primary-blue);
+    font-weight: 600;
+}
 
+/* เอฟเฟกต์การขยับขึ้น-ลงแบบนุ่มนวล */
+@keyframes smoothBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px); /* ขยับขึ้น 5 พิกเซล */
+        text-shadow: 0 5px 10px rgba(14, 165, 233, 0.3); /* เพิ่มเงาให้ดูมีมิติขณะลอย */
+    }
+}
+
+/* หยุดขยับเมื่อเอาเมาส์วาง */
+.footer-links a:hover {
+    animation-play-state: paused;
+    color: var(--secondary-blue);
+    text-decoration: underline;
+}
 .footer-links a,
 .footer-links p {
     text-decoration: none;
@@ -815,3 +839,4 @@ footer-content {
     </script>
 </body>
 </html>
+
